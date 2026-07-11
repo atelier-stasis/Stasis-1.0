@@ -99,7 +99,7 @@
     // Row height scales with the display size so the list breathes.
     const fontPx = parseFloat(getComputedStyle(nameSlots[0].title).fontSize);
     M.rowH = Math.max(128, fontPx * 2.15);
-    M.tagOffset = fontPx * 0.78;
+    M.tagOffset = fontPx * 0.66;
     // Main thumbnail: portrait 3:4, capped by both panel height and width.
     M.thumbW = Math.round(Math.min(M.panelH * 0.62 * 0.75, M.panelW * 0.58));
     M.thumbH = Math.round(M.thumbW / 0.75);

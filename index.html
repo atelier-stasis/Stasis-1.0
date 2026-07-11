@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stasis — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,200;9..40,300&family=Inter:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <!-- Persistent site header -->
+  <header class="site-header">
+    <a class="site-header__brand" href="index.html" id="brand"
+       aria-label="Stasis — home">
+      <img class="site-header__logo"
+           src="00 Visuals/01 Visuals_Stasis/Logo/Wide-Logo_White.png"
+           alt="Stasis">
+    </a>
+    <button class="site-header__menu" type="button">Menu</button>
+  </header>
+
+  <!-- Reusable split-screen shell -->
+  <main class="split" id="split">
+
+    <!-- Left panel: project names -->
+    <section class="split__panel split__panel--left" id="panel-left">
+      <div class="names" id="names">
+        <!-- name slots + dividers injected by JS -->
+        <div class="names__tag" id="category-tag"></div>
+      </div>
+
+      <!-- Project page: white reveal sliding down over the left half -->
+      <div class="project-reveal" id="project-reveal"></div>
+
+      <!-- Project pages, left half strip -->
+      <div class="ppages ppages--left" id="ppages-left">
+        <div class="ppage">
+          <div class="project-copy" id="project-copy">
+            <section>
+              <h3>The Concept</h3>
+              <p>This project began as a study in quiet light and restraint.
+                 The aim was to let the subject breathe within the frame, with
+                 nothing competing for attention, so every choice served a
+                 sense of calm and intention.</p>
+            </section>
+            <section>
+              <h3>Art Direction</h3>
+              <p>The palette was kept warm and muted, built around natural
+                 materials and soft neutral tones. Styling was stripped back
+                 to the essentials, leaving a result that feels understated,
+                 considered, and unhurried.</p>
+            </section>
+            <section>
+              <h3>Photography</h3>
+              <p>Shot entirely in available daylight, the series favours soft
+                 shadows and gentle contrast. The compositions stay simple and
+                 centred, giving each image room to settle and a tone that
+                 feels intimate without ever appearing staged.</p>
+            </section>
+          </div>
+        </div>
+        <div class="ppage" style="top: 100%;">
+          <img class="ppage__bleed" id="page1-left" alt="">
+        </div>
+        <div class="ppage" style="top: 200%;">
+          <img class="ppage__bleed" id="page2-left" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- Right panel: thumbnail carousel -->
+    <section class="split__panel split__panel--right" id="panel-right">
+      <div class="carousel" id="carousel">
+        <!-- thumbnail slots injected by JS -->
+      </div>
+
+      <!-- Project pages, right half strip (moves opposite to the left) -->
+      <div class="ppages ppages--right" id="ppages-right">
+        <div class="ppage" id="hero-dock"></div>
+        <div class="ppage ppage--white" style="top: -100%;">
+          <img class="ppage__inset" id="page1-right" alt="">
+        </div>
+        <div class="ppage ppage--white" style="top: -200%;">
+          <div class="quote">
+            <div class="quote__name">Jane Doe</div>
+            <blockquote class="quote__text">&ldquo;Some people think design
+              means how it looks. But if you dig deeper, it&rsquo;s really
+              how it works.&rdquo;</blockquote>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dropdown menu: covers only the right half -->
+      <div class="menu-panel" id="menu-panel">
+        <nav class="menu-nav">
+          <a class="menu-nav__item" href="#" data-nav="home">Home</a>
+          <a class="menu-nav__item" href="#" data-nav="about">About</a>
+          <a class="menu-nav__item" href="#" data-nav="projects">Projects</a>
+          <a class="menu-nav__item" href="#" data-nav="contact">Contact</a>
+        </nav>
+        <div class="menu-studio">
+          <div class="menu-studio__label">Stasis Studios</div>
+          <p>Stasis Studios is a photography practice working across
+             portraiture, editorial, and art direction, making quiet,
+             considered images built on natural light and a careful eye
+             for detail.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Loading animation: two full-bleed halves + breathing wordmark -->
+  <div class="loader" id="loader">
+    <div class="loader__half loader__half--left"><img id="loader-img-left" alt=""></div>
+    <div class="loader__half loader__half--right"><img id="loader-img-right" alt=""></div>
+    <span class="loader__word" id="loader-word" role="img"
+          aria-label="Stasis"></span>
+    <div class="loader__cue" id="loader-cue" aria-hidden="true">
+      <svg width="30" height="16" viewBox="0 0 22 12" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 1 L11 11 L21 1" stroke="#ffffff" stroke-width="1.75"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <script src="js/split-scroll.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

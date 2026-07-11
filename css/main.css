@@ -30,7 +30,13 @@ html, body {
   color: var(--color-body);
 }
 
-img { -webkit-user-drag: none; user-select: none; }
+/* Images are inert to the pointer: no right-click save, no dragging.
+   Clicks and hovers land on their containers instead. */
+img, canvas {
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: none;
+}
 
 /* ============================================================
    Persistent header
@@ -51,9 +57,9 @@ img { -webkit-user-drag: none; user-select: none; }
 .site-header__brand,
 .site-header__menu {
   pointer-events: auto;
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 500;
+  font-family: 'DM Sans', var(--font-body);
+  font-size: 14px;
+  font-weight: 300;
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--color-heading);
@@ -64,13 +70,53 @@ img { -webkit-user-drag: none; user-select: none; }
   cursor: pointer;
 }
 
-/* The wordmark asset is white; brightness maps it to #858585. */
+/* Menu toggle: three-line hamburger that folds into an X when open. */
+.site-header__menu {
+  position: relative;
+  width: 24px;
+  height: 16px;
+}
+
+.site-header__menu span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: #555555;
+  transition:
+    top 450ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 450ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 300ms ease;
+}
+
+.site-header__menu span:nth-child(1) { top: 0; }
+.site-header__menu span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.site-header__menu span:nth-child(3) { top: 100%; transform: translateY(-100%); }
+
+.site-header__menu.is-open span:nth-child(1) {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.site-header__menu.is-open span:nth-child(2) { opacity: 0; }
+
+.site-header__menu.is-open span:nth-child(3) {
+  top: 50%;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+/* The wordmark asset is white; brightness maps it to #858585 over
+   light ground. Over imagery it stays white (.is-light), crossfading
+   as the background beneath it changes. */
 .site-header__logo {
   display: block;
   height: 13px;
   width: auto;
   filter: brightness(0.522);
+  transition: filter 500ms ease;
 }
+
+.site-header__logo.is-light { filter: brightness(1); }
 
 /* ============================================================
    Split-screen shell (reusable)
@@ -307,6 +353,169 @@ img { -webkit-user-drag: none; user-select: none; }
 }
 
 /* ============================================================
+   Subpages (About / Contact) — split view, signature entrance
+   ============================================================ */
+.subpage {
+  position: fixed;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  font-family: 'DM Sans', var(--font-body);
+}
+
+.subpage.is-open { pointer-events: auto; }
+
+.subpage__half {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* Left enters from the bottom, right from the top — as everywhere. */
+.subpage__half--left  { left: 0;  transform: translateY(101%); }
+.subpage__half--right { right: 0; transform: translateY(-101%); background: #ffffff; }
+
+.subpage.is-open .subpage__half { transform: translateY(0); }
+
+.subpage__half--left img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.subpage__content {
+  height: 100%;
+  overflow-y: auto;
+  padding: 16vh clamp(40px, 7vw, 110px) clamp(56px, 9vh, 110px)
+           clamp(48px, 9%, 130px);
+}
+
+.subpage__content > p {
+  margin: 0 0 1.5em;
+  max-width: 600px;
+  font-size: clamp(16px, 1.15vw, 19px);
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--color-body);
+}
+
+/* About: large copy up top, collaborations marquee seated at the foot. */
+.subpage__content--about {
+  display: flex;
+  flex-direction: column;
+  padding: 14vh 0 6vh;
+  overflow: hidden;
+}
+
+.about-copy {
+  padding: 0 clamp(40px, 7vw, 110px) 0 clamp(48px, 9%, 130px);
+}
+
+.about-copy p {
+  margin: 0 0 1.3em;
+  max-width: 680px;
+  font-size: clamp(18px, 1.45vw, 28px);
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--color-body);
+}
+
+.about-collabs { margin-top: auto; }
+
+.about-collabs__label {
+  text-align: center;
+  font-size: clamp(17px, 1.2vw, 22px);
+  font-weight: 300;
+  color: var(--color-body);
+  margin-bottom: 26px;
+}
+
+/* Endless sliding client list, clipped by the panel edges, with a
+   gentle fade at either end. */
+.about-marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  -webkit-mask-image: linear-gradient(to right,
+    transparent 0, #000 24%, #000 76%, transparent 100%);
+  mask-image: linear-gradient(to right,
+    transparent 0, #000 24%, #000 76%, transparent 100%);
+}
+
+.about-marquee__track {
+  display: inline-flex;
+  animation: marquee-slide 55s linear infinite;
+  will-change: transform;
+}
+
+.about-marquee__seq {
+  white-space: pre;
+  font-size: clamp(17px, 1.35vw, 26px);
+  font-weight: 200;              /* DM Sans ExtraLight */
+  color: #A2A2A2;
+}
+
+@keyframes marquee-slide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Contact form */
+.contact-form {
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-form label {
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #858585;
+  margin-bottom: 8px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  font-family: 'DM Sans', var(--font-body);
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--color-body);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-hairline);
+  padding: 4px 0 10px;
+  margin-bottom: 30px;
+  outline: none;
+  resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus { border-bottom-color: #A2A2A2; }
+
+.contact-form button {
+  align-self: flex-start;
+  font-family: 'DM Sans', var(--font-body);
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #555555;
+  background: none;
+  border: 1px solid var(--color-hairline);
+  padding: 12px 34px;
+  cursor: pointer;
+  transition: background 0.4s ease;
+}
+
+.contact-form button:hover { background: #F4F4F1; }
+
+/* ============================================================
    Loading animation — plays once over the home page on load
    ============================================================ */
 .loader {
@@ -361,15 +570,17 @@ img { -webkit-user-drag: none; user-select: none; }
   letter-spacing: 0.3em;
   color: #ffffff;
   opacity: 0;
-  transition:
-    opacity 700ms ease 250ms,
-    gap 2600ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 700ms ease 250ms;
 }
 
+/* Tracking animates via per-letter transforms (GPU-composited and
+   subpixel-smooth), not the layout gap, which would jitter. */
 .loader__word canvas.loader__letter {
   display: block;
   height: 100%;
   width: auto;
+  transition: transform 2600ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 
 .loader.is-in .loader__word { opacity: 1; }
@@ -408,10 +619,40 @@ img { -webkit-user-drag: none; user-select: none; }
 /* ============================================================
    Dropdown menu — white panel over the right half only
    ============================================================ */
-.menu-panel {
-  position: absolute;
+/* Soft blur over the whole site while the menu is open. */
+.menu-backdrop {
+  position: fixed;
   inset: 0;
-  z-index: 8;
+  z-index: 8;                    /* above subpages, below the panel */
+  visibility: hidden;
+  background: rgba(251, 251, 249, 0);
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
+  transition:
+    backdrop-filter 600ms ease,
+    -webkit-backdrop-filter 600ms ease,
+    background 600ms ease,
+    visibility 0s linear 600ms;
+}
+
+.menu-backdrop.is-on {
+  visibility: visible;
+  background: rgba(251, 251, 249, 0.12);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  transition:
+    backdrop-filter 600ms ease,
+    -webkit-backdrop-filter 600ms ease,
+    background 600ms ease;
+}
+
+.menu-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  z-index: 9;                    /* over everything except the header */
   background: #ffffff;
   transform: translateY(-101%);
   transition: transform 850ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -428,11 +669,11 @@ img { -webkit-user-drag: none; user-select: none; }
 .menu-nav__item {
   display: block;
   width: fit-content;
-  font-family: var(--font-display);
-  font-weight: 400;
+  font-family: 'DM Sans', var(--font-body);
+  font-weight: 300;              /* DM Sans Light, matching project titles */
   font-size: clamp(30px, 2.8vw, 50px);
   line-height: 1.15;
-  color: var(--color-heading);
+  color: #555555;
   text-decoration: none;
   margin-bottom: clamp(22px, 3.4vh, 40px);
 }
@@ -444,31 +685,24 @@ img { -webkit-user-drag: none; user-select: none; }
   max-width: 420px;
 }
 
-.menu-studio__label {
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--color-heading);
-  margin-bottom: 14px;
-}
-
 .menu-studio p {
   margin: 0;
-  font-family: var(--font-body);
-  font-size: 13.5px;
-  line-height: 1.75;
-  color: var(--color-body);
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--color-hairline);
+  font-family: 'DM Sans', var(--font-body);
+  font-size: 16px;
+  font-weight: 300;              /* DM Sans Light */
+  line-height: 1.5;
+  color: #858585;
+  padding-top: 22px;
+  border-top: 1px solid var(--color-hairline);   /* footer line above */
 }
 
-/* Items fade in one at a time once the panel is down. */
+.menu-studio__aff { display: block; }            /* aligned left edges */
+
+/* Items fade in one at a time, quickly. */
 .menu-nav__item,
 .menu-studio {
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.35s ease;
 }
 
 .menu-panel .is-in { opacity: 1; }

@@ -50,8 +50,10 @@
     p2Left: document.getElementById('page2-left'),
   };
 
+  const logoEl = document.querySelector('.site-header__logo');
   const menuBtn = document.querySelector('.site-header__menu');
   const menuPanel = document.getElementById('menu-panel');
+  const menuBackdrop = document.getElementById('menu-backdrop');
   const menuItems = Array.prototype.slice.call(
     menuPanel.querySelectorAll('.menu-nav__item'))
     .concat([menuPanel.querySelector('.menu-studio')]);
@@ -222,12 +224,22 @@
   const PAGE_COUNT = 3;
   const PUSH_MS = 1150;       // slower, more drawn-out than the home carousel
 
+  /* The logo sits over the left half: dark on light ground, white over
+     imagery (project pages 1–2 and the subpages have a full-bleed image
+     under the top-left corner). */
+  function updateLogoTheme() {
+    const overImage = subpageOpen() || (projectOpen && page > 0);
+    logoEl.classList.toggle('is-light', overImage);
+  }
+
   /* Move both strips to a page: halves push in opposite directions
      (page layout inverts the right strip's stacking order). */
   function goToPage(p) {
     page = Math.max(0, Math.min(PAGE_COUNT - 1, p));
     stripLeft.style.transform = 'translateY(' + (-page * 100) + '%)';
     stripRight.style.transform = 'translateY(' + (page * 100) + '%)';
+    // Flip the logo as the new background slides beneath it.
+    setTimeout(updateLogoTheme, PUSH_MS * 0.45);
   }
 
   /* Reset the strips to page 0 without animating. */
@@ -393,6 +405,86 @@
     if (e.key === 'ArrowUp' || e.key === 'PageUp') tryPage(-1, performance.now());
   });
 
+  /* Snap the project view shut with no animation (used when another
+     page is about to cover or replace it). */
+  function resetProjectInstant() {
+    if (!projectOpen) return;
+    hideSections();
+    const slot = thumbSlots[HALF].el;
+    revealEl.style.transition = 'none';
+    revealEl.classList.remove('is-open');
+    slot.style.transition = 'none';
+    carouselEl.appendChild(slot);
+    slot.style.zIndex = '';
+    slot.style.left = '50%';               // undo the expanded geometry
+    slot.style.top = '50%';
+    slot.style.transform = 'translateY(0px) scale(1)';
+    for (let i = 0; i < SLOTS; i++) {
+      thumbSlots[i].el.style.transition = 'none';
+    }
+    resetStrips();
+    projectOpen = false;
+    heroDocked = false;
+    splitEl.classList.remove('is-project-open');
+    measure();
+    render(scroller.pos);
+    void splitEl.offsetHeight;
+    revealEl.style.transition = '';
+    for (let i = 0; i < SLOTS; i++) {
+      thumbSlots[i].el.style.transition = '';
+    }
+    showTag(scroller.wrap(scroller.pos));
+    setActiveCues();
+  }
+
+  /* Block the context menu over any image-bearing region so photos
+     can't be saved or opened in a new tab. */
+  document.addEventListener('contextmenu', function (e) {
+    if (e.target.closest(
+      '.carousel, .loader, .ppages, .subpage__half--left, .site-header__brand')) {
+      e.preventDefault();
+    }
+  });
+
+  document.addEventListener('dragstart', function (e) {
+    if (e.target.closest('img, canvas')) e.preventDefault();
+  });
+
+  /* ---------- subpages (About / Contact) ---------- */
+
+  const aboutEl = document.getElementById('page-about');
+  const contactEl = document.getElementById('page-contact');
+
+  function subpageOpen() {
+    return aboutEl.classList.contains('is-open') ||
+      contactEl.classList.contains('is-open');
+  }
+
+  function openSubpage(el) {
+    aboutEl.classList.toggle('is-open', el === aboutEl);
+    contactEl.classList.toggle('is-open', el === contactEl);
+    scroller.setEnabled(false);       // nothing behind a subpage moves
+    setTimeout(updateLogoTheme, 400); // flip as the image slides under
+  }
+
+  function closeSubpages() {
+    const wasOpen = subpageOpen();
+    aboutEl.classList.remove('is-open');
+    contactEl.classList.remove('is-open');
+    if (wasOpen) setTimeout(updateLogoTheme, 400);
+  }
+
+  document.getElementById('contact-form')
+    .addEventListener('submit', function (e) {
+      e.preventDefault();
+      const subject = document.getElementById('cf-subject').value;
+      const from = document.getElementById('cf-email').value;
+      const message = document.getElementById('cf-message').value;
+      location.href = 'mailto:hello@stasis.studio' +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent('From: ' + from + '\n\n' + message);
+    });
+
   /* ---------- dropdown menu ----------
      Covers only the right half; everything behind it stays put. */
 
@@ -402,11 +494,13 @@
     if (menuOpen) return;
     menuOpen = true;
     scroller.setEnabled(false);           // nothing behind the menu moves
-    menuBtn.textContent = 'Close';
+    menuBtn.classList.add('is-open');
+    menuBtn.setAttribute('aria-label', 'Close');
     menuPanel.classList.add('is-open');
-    // Items fade in one at a time once the panel has come down.
+    menuBackdrop.classList.add('is-on');
+    // Items fade in one at a time, promptly, while the panel comes down.
     menuItems.forEach(function (el, i) {
-      el.style.transitionDelay = (MENU_MS - 300 + i * 130) + 'ms';
+      el.style.transitionDelay = (120 + i * 70) + 'ms';
       el.classList.add('is-in');
     });
   }
@@ -414,13 +508,17 @@
   function closeMenu() {
     if (!menuOpen) return;
     menuOpen = false;
-    menuBtn.textContent = 'Menu';
+    menuBtn.classList.remove('is-open');
+    menuBtn.setAttribute('aria-label', 'Menu');
     menuPanel.classList.remove('is-open');
+    menuBackdrop.classList.remove('is-on');
     menuItems.forEach(function (el) {
       el.style.transitionDelay = '0ms';
       el.classList.remove('is-in');
     });
-    if (!projectOpen) scroller.setEnabled(true);
+    if (!projectOpen && !subpageOpen() && !landingActive) {
+      scroller.setEnabled(true);
+    }
   }
 
   /* ---------- category tag ---------- */
@@ -464,11 +562,13 @@
     });
   }
 
-  // STASIS returns home: reverse the transition instead of reloading.
+  // STASIS returns to the carousel: reverse transitions, no reload.
   brandEl.addEventListener('click', function (e) {
     e.preventDefault();
     closeMenu();
+    closeSubpages();
     closeProject();
+    if (!projectOpen && !landingActive) scroller.setEnabled(true);
   });
 
   // MENU / CLOSE toggle.
@@ -476,15 +576,32 @@
     if (menuOpen) closeMenu(); else openMenu();
   });
 
-  // Menu navigation. Home returns to the carousel; the other
-  // destinations are placeholders for future pages.
+  // Menu navigation.
   menuPanel.addEventListener('click', function (e) {
     const item = e.target.closest('.menu-nav__item');
     if (!item) return;
     e.preventDefault();
-    if (item.dataset.nav === 'home') {
+    const nav = item.dataset.nav;
+    if (nav === 'home') {
+      // Back to the split landing page.
       closeMenu();
-      closeProject();
+      closeSubpages();
+      resetProjectInstant();
+      startLanding();
+    } else if (nav === 'projects') {
+      // Back to the scrolling project browser.
+      closeMenu();
+      closeSubpages();
+      resetProjectInstant();
+      scroller.setEnabled(true);
+    } else if (nav === 'about') {
+      closeMenu();
+      resetProjectInstant();
+      openSubpage(aboutEl);
+    } else if (nav === 'contact') {
+      closeMenu();
+      resetProjectInstant();
+      openSubpage(contactEl);
     }
   });
 
@@ -492,56 +609,42 @@
   showTag(0);
   setActiveCues();
 
-  /* ---------- loading animation (initial load only) ---------- */
+  /* ---------- landing page (initial load, and menu Home) ---------- */
 
-  (function runLoader() {
-    const loaderEl = document.getElementById('loader');
-    const wordEl = document.getElementById('loader-word');
-    const imgL = document.getElementById('loader-img-left');
-    const imgR = document.getElementById('loader-img-right');
+  const loaderEl = document.getElementById('loader');
+  const wordEl = document.getElementById('loader-word');
+  const imgL = document.getElementById('loader-img-left');
+  const imgR = document.getElementById('loader-img-right');
+  const cueEl = document.getElementById('loader-cue');
 
-    scroller.setEnabled(false);   // the site stays still behind the loader
+  // Landing visuals: one project folder at random, then two different
+  // images from that same project — never a cross-project pairing.
+  // Re-randomised every time the landing shows.
+  const LANDING_ROOT =
+    '00 Visuals/01 Visuals_Stasis/Landing Page Visuals/';
+  const LANDING_SETS = [
+    [
+      '00 FBO/Architecture_peeking_through_asp…_2K_202607101747.jpeg',
+      '00 FBO/Landscape_in_focus_woodlands_blu…_202607101747.jpeg',
+    ],
+    [
+      '01 Gallatin Grange/Porsche_and_building_in_frame_202607101748.jpeg',
+      '01 Gallatin Grange/Porsche_car_with_badge_water_202607101749.jpeg',
+      '01 Gallatin Grange/Woman_looking_into_sunset_2K_202607101748.jpeg',
+      '01 Gallatin Grange/Woods_view_through_tree_trunks_202607101748.jpeg',
+    ],
+    [
+      '02 Iceland Sauna Competition/Arctic_fox_in_winter_sunlight_202607101750 (1).jpeg',
+      '02 Iceland Sauna Competition/Arctic_fox_in_winter_sunlight_202607101750.jpeg',
+      '02 Iceland Sauna Competition/Terrain_and_gabion_sauna_2K_202607101750.jpeg',
+    ],
+  ];
 
-    // Landing visuals: one project folder at random, then two different
-    // images from that same project — never a cross-project pairing.
-    // Re-randomised on every load.
-    const LANDING_ROOT =
-      '00 Visuals/01 Visuals_Stasis/Landing Page Visuals/';
-    const LANDING_SETS = [
-      [
-        '00 FBO/Architecture_peeking_through_asp…_2K_202607101747.jpeg',
-        '00 FBO/Landscape_in_focus_woodlands_blu…_202607101747.jpeg',
-      ],
-      [
-        '01 Gallatin Grange/Porsche_and_building_in_frame_202607101748.jpeg',
-        '01 Gallatin Grange/Porsche_car_with_badge_water_202607101749.jpeg',
-        '01 Gallatin Grange/Woman_looking_into_sunset_2K_202607101748.jpeg',
-        '01 Gallatin Grange/Woods_view_through_tree_trunks_202607101748.jpeg',
-      ],
-      [
-        '02 Iceland Sauna Competition/Arctic_fox_in_winter_sunlight_202607101750 (1).jpeg',
-        '02 Iceland Sauna Competition/Arctic_fox_in_winter_sunlight_202607101750.jpeg',
-        '02 Iceland Sauna Competition/Terrain_and_gabion_sauna_2K_202607101750.jpeg',
-      ],
-    ];
-    const set = LANDING_SETS[Math.floor(Math.random() * LANDING_SETS.length)];
-    const a = Math.floor(Math.random() * set.length);
-    let b = Math.floor(Math.random() * (set.length - 1));
-    if (b >= a) b++;
-    imgL.src = encodeURI(LANDING_ROOT + set[a]);
-    imgR.src = encodeURI(LANDING_ROOT + set[b]);
-
-    const ready = Promise.all([imgL, imgR].map(function (im) {
-      return im.complete ? true : new Promise(function (r) {
-        im.onload = r;
-        im.onerror = r;
-      });
-    }));
-
-    const cueEl = document.getElementById('loader-cue');
-    let landingReady = false;    // entrance finished, waiting for a scroll
-    let dismissed = false;
-    let trackGap = null;         // { from, to } gap in px, set once sliced
+  let landingActive = false;   // landing is covering the site
+  let landingReady = false;    // entrance finished, waiting for a scroll
+  let dismissed = false;
+  let trackGap = null;         // { from, to } gap in px, set once sliced
+  let landingSession = 0;      // invalidates stale timeouts on re-show
 
     // Slice the white logo PNG into its individual letters (by scanning
     // for fully transparent columns) so the gaps between the real
@@ -647,49 +750,101 @@
       im.src = '00 Visuals/01 Visuals_Stasis/Logo/Wide-Logo_White.png';
     });
 
+  /* Widen the tracking by sliding each letter outward from the centre
+     with transforms — smooth on the compositor, unlike animating the
+     layout gap. `extra` is the additional spacing per letter gap. */
+  function spreadLetters(extra) {
+    const letters = wordEl.querySelectorAll('.loader__letter');
+    const n = letters.length;
+    for (let i = 0; i < n; i++) {
+      const x = (i - (n - 1) / 2) * extra;
+      letters[i].style.transform = 'translateX(' + x.toFixed(2) + 'px)';
+    }
+  }
+
+  /* Show (or re-show) the landing page: fresh image pair, halves push
+     in from opposite directions, wordmark breathes, chevron invites
+     the dismissing scroll. */
+  function startLanding() {
+    const sid = ++landingSession;
+    landingActive = true;
+    landingReady = false;
+    dismissed = false;
+    scroller.setEnabled(false);   // the site stays still behind the landing
+    cueEl.classList.remove('is-in');
+    wordEl.classList.remove('is-gone');
+    loaderEl.classList.remove('is-done');
+    loaderEl.classList.remove('is-in');            // halves offscreen
+    loaderEl.style.pointerEvents = '';
+    spreadLetters(0);                              // back to natural tracking
+
+    const set =
+      LANDING_SETS[Math.floor(Math.random() * LANDING_SETS.length)];
+    const a = Math.floor(Math.random() * set.length);
+    let b = Math.floor(Math.random() * (set.length - 1));
+    if (b >= a) b++;
+    imgL.src = encodeURI(LANDING_ROOT + set[a]);
+    imgR.src = encodeURI(LANDING_ROOT + set[b]);
+
+    const ready = Promise.all([imgL, imgR].map(function (im) {
+      return im.complete ? true : new Promise(function (r) {
+        im.onload = r;
+        im.onerror = r;
+      });
+    }));
+
     // Begin once the images and wordmark are in (or after a grace period).
     Promise.race([
       Promise.all([ready, logoReady]),
       new Promise(function (r) { setTimeout(r, 2200); }),
     ])
       .then(function () {
+        if (dismissed || sid !== landingSession) return;
         requestAnimationFrame(function () {
-          loaderEl.classList.add('is-in');       // halves push in, word breathes
-          if (trackGap) {
-            wordEl.style.gap = trackGap.to.toFixed(2) + 'px';
-          }
+          if (sid !== landingSession) return;
+          loaderEl.classList.add('is-in');   // halves push in, word breathes
+          if (trackGap) spreadLetters(trackGap.to - trackGap.from);
         });
         // The landing then holds; the chevron invites the first scroll.
         setTimeout(function () {
+          if (dismissed || sid !== landingSession) return;
           landingReady = true;
           cueEl.classList.add('is-in');
         }, 1600);
       });
+  }
 
-    // The first scroll gesture dismisses the landing into the home page.
-    function dismiss() {
-      if (!landingReady || dismissed) return;
-      dismissed = true;
-      cueEl.classList.remove('is-in');
-      wordEl.classList.add('is-gone');           // STASIS fades away first
-      setTimeout(function () {
-        loaderEl.classList.remove('is-in');      // halves slide back out
-      }, 500);
-      setTimeout(function () {
-        loaderEl.classList.add('is-done');       // home page is live
-        scroller.setEnabled(true);
-      }, 1700);
+  // The first scroll gesture dismisses the landing into the site.
+  function dismissLanding() {
+    if (!landingReady || dismissed) return;
+    const sid = landingSession;
+    dismissed = true;
+    landingReady = false;
+    loaderEl.style.pointerEvents = 'none';       // header usable right away
+    cueEl.classList.remove('is-in');
+    wordEl.classList.add('is-gone');             // STASIS fades away first
+    setTimeout(function () {
+      if (sid !== landingSession) return;
+      loaderEl.classList.remove('is-in');        // halves slide back out
+    }, 500);
+    setTimeout(function () {
+      if (sid !== landingSession) return;
+      loaderEl.classList.add('is-done');         // the site is live
+      landingActive = false;
+      scroller.setEnabled(true);
+    }, 1700);
+  }
+
+  window.addEventListener('wheel', dismissLanding, { passive: true });
+  window.addEventListener('touchmove', dismissLanding, { passive: true });
+  window.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+      dismissLanding();
     }
+  });
+  cueEl.addEventListener('click', dismissLanding);
 
-    window.addEventListener('wheel', dismiss, { passive: true });
-    window.addEventListener('touchmove', dismiss, { passive: true });
-    window.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
-        dismiss();
-      }
-    });
-    cueEl.addEventListener('click', dismiss);
-  })();
+  startLanding();
 
   window.__debug = {
     scroller: scroller,

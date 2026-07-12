@@ -51,6 +51,7 @@
   };
 
   const logoEl = document.querySelector('.site-header__logo');
+  const backEl = document.getElementById('project-back');
   const menuBtn = document.querySelector('.site-header__menu');
   const menuPanel = document.getElementById('menu-panel');
   const menuBackdrop = document.getElementById('menu-backdrop');
@@ -232,14 +233,21 @@
     logoEl.classList.toggle('is-light', overImage);
   }
 
+  /* The back arrow sits over the full-bleed images on project pages 1–2
+     (page 0's bottom-left holds the copy block). */
+  function updateBackArrow() {
+    backEl.classList.toggle('is-visible', projectOpen && page > 0);
+  }
+
   /* Move both strips to a page: halves push in opposite directions
      (page layout inverts the right strip's stacking order). */
   function goToPage(p) {
     page = Math.max(0, Math.min(PAGE_COUNT - 1, p));
     stripLeft.style.transform = 'translateY(' + (-page * 100) + '%)';
     stripRight.style.transform = 'translateY(' + (page * 100) + '%)';
-    // Flip the logo as the new background slides beneath it.
+    // Flip the logo (and reveal the back arrow) as the page slides in.
     setTimeout(updateLogoTheme, PUSH_MS * 0.45);
+    updateBackArrow();
   }
 
   /* Reset the strips to page 0 without animating. */
@@ -474,17 +482,6 @@
     if (wasOpen) setTimeout(updateLogoTheme, 400);
   }
 
-  document.getElementById('contact-form')
-    .addEventListener('submit', function (e) {
-      e.preventDefault();
-      const subject = document.getElementById('cf-subject').value;
-      const from = document.getElementById('cf-email').value;
-      const message = document.getElementById('cf-message').value;
-      location.href = 'mailto:hello@stasis.studio' +
-        '?subject=' + encodeURIComponent(subject) +
-        '&body=' + encodeURIComponent('From: ' + from + '\n\n' + message);
-    });
-
   /* ---------- dropdown menu ----------
      Covers only the right half; everything behind it stays put. */
 
@@ -570,6 +567,9 @@
     closeProject();
     if (!projectOpen && !landingActive) scroller.setEnabled(true);
   });
+
+  // Back arrow over the project images: return to the carousel.
+  backEl.addEventListener('click', closeProject);
 
   // MENU / CLOSE toggle.
   menuBtn.addEventListener('click', function () {
@@ -775,6 +775,7 @@
     wordEl.classList.remove('is-gone');
     loaderEl.classList.remove('is-done');
     loaderEl.classList.remove('is-in');            // halves offscreen
+    loaderEl.classList.remove('is-exiting');       // white backdrop restored
     loaderEl.style.pointerEvents = '';
     spreadLetters(0);                              // back to natural tracking
 
@@ -821,6 +822,7 @@
     dismissed = true;
     landingReady = false;
     loaderEl.style.pointerEvents = 'none';       // header usable right away
+    loaderEl.classList.add('is-exiting');        // drop the white backdrop
     cueEl.classList.remove('is-in');
     wordEl.classList.add('is-gone');             // STASIS fades away first
     setTimeout(function () {
@@ -842,7 +844,8 @@
       dismissLanding();
     }
   });
-  cueEl.addEventListener('click', dismissLanding);
+  // A click anywhere on the landing also transitions into the site.
+  loaderEl.addEventListener('click', dismissLanding);
 
   startLanding();
 

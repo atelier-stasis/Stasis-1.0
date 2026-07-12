@@ -97,6 +97,17 @@
 
     </section>
 
+    <!-- Back to the carousel, over the project-page images -->
+    <button class="project-back" id="project-back" type="button"
+            aria-label="Back to projects">
+      <svg width="34" height="14" viewBox="0 0 34 14" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 1 L2 7 L8 13 M2 7 L33 7" stroke="#ffffff"
+              stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round"/>
+      </svg>
+    </button>
+
   </main>
 
   <!-- Blur over everything behind the open menu -->
@@ -155,16 +166,14 @@
       <img src="00 Visuals/01 Visuals_Stasis/Landing Page Visuals/02 Iceland Sauna Competition/Terrain_and_gabion_sauna_2K_202607101750.jpeg" alt="">
     </div>
     <div class="subpage__half subpage__half--right">
-      <div class="subpage__content">
-        <form class="contact-form" id="contact-form">
-          <label for="cf-subject">Subject</label>
-          <input type="text" id="cf-subject" name="subject" required>
-          <label for="cf-email">From email</label>
-          <input type="email" id="cf-email" name="email" required>
-          <label for="cf-message">Message</label>
-          <textarea id="cf-message" name="message" rows="6" required></textarea>
-          <button type="submit">Send</button>
-        </form>
+      <div class="subpage__content subpage__content--contact">
+        <div class="contact-block">
+          <p class="contact-block__lead">Atelier Stasis<br>SW United States</p>
+          <p class="contact-block__body">If you have any collaboration
+             requests or just want to say &lsquo;hi&rsquo;, give us a holler
+             at<br>
+             <a href="mailto:atelier.stasis@gmail.com">atelier.stasis@gmail.com</a></p>
+        </div>
       </div>
     </div>
   </div>

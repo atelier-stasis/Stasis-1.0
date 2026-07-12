@@ -464,6 +464,70 @@ img, canvas {
   to   { transform: translateX(-50%); }
 }
 
+/* Contact: address + invitation, seated like the About copy. */
+.subpage__content--contact {
+  display: flex;
+  align-items: center;
+}
+
+.contact-block {
+  padding: 0 clamp(40px, 7vw, 110px) 0 clamp(48px, 9%, 130px);
+  max-width: 560px;
+}
+
+.contact-block__lead {
+  margin: 0 0 1.8em;
+  font-size: clamp(18px, 1.45vw, 26px);
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--color-heading);
+}
+
+.contact-block__body {
+  margin: 0;
+  font-size: clamp(16px, 1.15vw, 20px);
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--color-body);
+}
+
+.contact-block__body a {
+  color: var(--color-heading);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-hairline);
+  padding-bottom: 1px;
+  transition: opacity 0.35s ease;
+}
+
+.contact-block__body a:hover { opacity: 0.6; }
+
+/* Back arrow — over the project-page images, returns to the carousel. */
+.project-back {
+  position: fixed;
+  left: var(--header-pad);
+  bottom: var(--header-pad);
+  z-index: 7;
+  padding: 8px;
+  margin: -8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-6px);
+  transition: opacity 550ms ease, transform 550ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-back.is-visible {
+  opacity: 0.9;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.project-back:hover { opacity: 1; }
+
+.project-back svg { display: block; }
+
 /* Contact form */
 .contact-form {
   max-width: 440px;
@@ -525,7 +589,12 @@ img, canvas {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* White fill so the site (carousel) isn't glimpsed while the halves
+     are still sliding in. Cleared on exit so the halves reveal the site. */
+  background: #ffffff;
 }
+
+.loader.is-exiting { background: transparent; }
 
 .loader.is-done { display: none; }
 

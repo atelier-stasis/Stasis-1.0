@@ -10,8 +10,36 @@
 (function () {
   'use strict';
 
+  /* ---------- Gallatin Grange: its own visuals and page sequence ----------
+     Page types (each defines the left-half and right-half of a spread):
+       hero        — copy block (left) + docked hero photograph (right)
+       full        — one image full-bleed across both halves
+       bleed-inset — full-bleed image (left) + centred inset on white (right)
+       bleed-quote — full-bleed image (left) + centred quote on white (right)
+       inset-bleed — centred inset on white (left) + full-bleed image (right) */
+  const GG = '00 Visuals/02 Visuals_Projects/01 Gallatin Grange/';
+  const GG_IMG = {
+    hero:    GG + 'Woman_looking_into_sunset_2K_202607121645.jpeg',
+    woods:   GG + 'Photo_from_woods_seeing_building_202607121644.jpeg',
+    facade:  GG + 'Building_through_tree_leaves_2K_202607121646.jpeg',
+    man:     GG + 'Man_in_minimal_clothing_architec…_202607121646.jpeg',
+    porsche: GG + 'Porsche_and_building_in_frame_202607121646.jpeg',
+    sunset:  GG + 'Woman_on_balcony_sunset_2K_202607121656.jpeg',
+    leaves:  GG + 'Leaves_moving_handheld_camera_202607121707.mp4',
+  };
+  const GALLATIN_PAGES = [
+    { type: 'hero' },
+    { type: 'full',        image: GG_IMG.woods },
+    { type: 'bleed-inset', left: GG_IMG.facade,  inset: GG_IMG.man },
+    { type: 'bleed-quote', left: GG_IMG.porsche },
+    { type: 'full',        image: GG_IMG.sunset },
+    { type: 'inset-bleed', inset: GG_IMG.man,    right: GG_IMG.facade },
+    { type: 'video-full',  video: GG_IMG.leaves },
+  ];
+
   // Title = project name, sub-heading = location. Visuals are reused
-  // from the five placeholder sets until each project gets its own.
+  // from the five placeholder sets until each project gets its own;
+  // projects with an explicit `pages` array drive a bespoke sequence.
   const PROJECTS = [
     { name: 'Catskills Retreat',     location: 'Catskills Range, New York',       image: '00 Visuals/project-01/01.jpg' },
     { name: 'Heard Falkenstern',     location: 'Portland, Oregon',                image: '00 Visuals/project-02/01.jpg' },
@@ -19,7 +47,7 @@
     { name: 'Pearl Museum',          location: 'Abu Dhabi, United Arab Emirates', image: '00 Visuals/project-04/01.jpg' },
     { name: 'Findlay',               location: 'Cincinnati, Ohio',                image: '00 Visuals/project-05/01.jpg' },
     { name: 'Batavia Farm',          location: 'Cincinnati, Ohio',                image: '00 Visuals/project-01/01.jpg' },
-    { name: 'Gallatin Grange',       location: 'Columbia County, New York',       image: '00 Visuals/project-02/01.jpg' },
+    { name: 'Gallatin Grange',       location: 'Columbia County, New York',       image: GG_IMG.hero, pages: GALLATIN_PAGES },
     { name: 'Frame House',           location: 'East Hampton, New York',          image: '00 Visuals/project-03/01.jpg' },
     { name: 'House on the Bluff',    location: 'Monsaraz, Portugal',              image: '00 Visuals/project-04/01.jpg' },
     { name: 'Snowmass',              location: 'Aspen, Colorado',                 image: '00 Visuals/project-05/01.jpg' },
@@ -44,11 +72,7 @@
   const stripLeft = document.getElementById('ppages-left');
   const stripRight = document.getElementById('ppages-right');
   const heroDock = document.getElementById('hero-dock');
-  const pageImgs = {
-    p1Left: document.getElementById('page1-left'),
-    p1Right: document.getElementById('page1-right'),
-    p2Left: document.getElementById('page2-left'),
-  };
+  const videoOverlay = document.getElementById('project-video');
 
   const logoEl = document.querySelector('.site-header__logo');
   const backEl = document.getElementById('project-back');
@@ -222,42 +246,158 @@
     });
   }
 
-  const PAGE_COUNT = 3;
   const PUSH_MS = 1150;       // slower, more drawn-out than the home carousel
 
-  /* The logo sits over the left half: dark on light ground, white over
-     imagery (project pages 1–2 and the subpages have a full-bleed image
-     under the top-left corner). */
+  let currentPages = [];      // the open project's page sequence
+
+  /* The default sequence when a project has no bespoke `pages`: hero,
+     then a bleed+inset spread, then a bleed+quote spread. */
+  function defaultPages(project) {
+    const folder = project.image.replace(/\/[^/]+$/, '');
+    return [
+      { type: 'hero' },
+      { type: 'bleed-inset', left: folder + '/02.jpg', inset: folder + '/03.jpg' },
+      { type: 'bleed-quote', left: folder + '/04.jpg' },
+    ];
+  }
+
+  /* Whether a page's LEFT half is a photograph (needs the white logo and
+     the light back arrow) rather than white ground. */
+  function leftDark(pg) {
+    return !!pg && (pg.type === 'full' || pg.type === 'video-full' ||
+      pg.type === 'bleed-inset' || pg.type === 'bleed-quote');
+  }
+
+  /* ---------- page DOM builders ---------- */
+
+  function makeImg(cls, src) {
+    const img = document.createElement('img');
+    img.className = cls;
+    img.alt = '';
+    img.src = encodeURI(src);
+    return img;
+  }
+
+  /* Fill the full-screen video layer with a single clip. Unlike the
+     split image pages, the video moves as one whole unit, so it lives in
+     its own overlay rather than the two counter-moving strips. */
+  function setupVideoOverlay(src) {
+    videoOverlay.innerHTML = '';
+    const v = document.createElement('video');
+    v.className = 'project-video__el';
+    v.src = encodeURI(src);
+    v.muted = true;            // required for autoplay
+    v.loop = true;
+    v.autoplay = true;
+    v.playsInline = true;
+    v.setAttribute('playsinline', '');
+    v.preload = 'auto';
+    videoOverlay.appendChild(v);
+    v.play().catch(function () {});
+  }
+
+  function makeQuote() {
+    const q = document.createElement('div');
+    q.className = 'quote';
+    q.innerHTML = '<div class="quote__name">Jane Doe</div>' +
+      '<blockquote class="quote__text">“Some people think design ' +
+      'means how it looks. But if you dig deeper, it’s really how it ' +
+      'works.”</blockquote>';
+    return q;
+  }
+
+  /* Build the strip children (index 1..n) for the given page sequence.
+     Index 0 (copy block on the left, hero dock on the right) is the
+     static markup and is left in place. */
+  function buildProjectPages(pages) {
+    currentPages = pages;
+    while (stripLeft.children.length > 1) stripLeft.lastChild.remove();
+    while (stripRight.children.length > 1) stripRight.lastChild.remove();
+    videoOverlay.classList.remove('is-in');
+    videoOverlay.innerHTML = '';
+
+    for (let k = 1; k < pages.length; k++) {
+      const pg = pages[k];
+
+      // The video is a whole-unit overlay, not a split strip page.
+      if (pg.type === 'video-full') {
+        setupVideoOverlay(pg.video);
+        continue;
+      }
+
+      const l = document.createElement('div');
+      l.className = 'ppage';
+      l.style.top = (k * 100) + '%';
+      const r = document.createElement('div');
+      r.className = 'ppage';
+      r.style.top = (-k * 100) + '%';
+
+      if (pg.type === 'full') {
+        // One image split across both halves; the halves separate during
+        // the push and rejoin, seamless, when settled.
+        l.appendChild(makeImg('ppage__full ppage__full--left', pg.image));
+        r.appendChild(makeImg('ppage__full ppage__full--right', pg.image));
+      } else if (pg.type === 'bleed-inset') {
+        l.appendChild(makeImg('ppage__bleed', pg.left));
+        r.classList.add('ppage--white');
+        r.appendChild(makeImg('ppage__inset', pg.inset));
+      } else if (pg.type === 'bleed-quote') {
+        l.appendChild(makeImg('ppage__bleed', pg.left));
+        r.classList.add('ppage--white');
+        r.appendChild(makeQuote());
+      } else if (pg.type === 'inset-bleed') {
+        l.classList.add('ppage--white');
+        l.appendChild(makeImg('ppage__inset', pg.inset));
+        r.appendChild(makeImg('ppage__bleed', pg.right));
+      }
+      stripLeft.appendChild(l);
+      stripRight.appendChild(r);
+    }
+  }
+
+  /* The logo sits over the left half: dark on light ground, white over a
+     full-bleed photograph. */
   function updateLogoTheme() {
-    const overImage = subpageOpen() || (projectOpen && page > 0);
+    const overImage = subpageOpen() ||
+      (projectOpen && leftDark(currentPages[page]));
     logoEl.classList.toggle('is-light', overImage);
   }
 
-  /* The back arrow sits over the full-bleed images on project pages 1–2
-     (page 0's bottom-left holds the copy block). */
+  /* The back arrow shows on every page past the hero; it turns dark when
+     the left half beneath it is white rather than a photograph. */
   function updateBackArrow() {
-    backEl.classList.toggle('is-visible', projectOpen && page > 0);
+    const show = projectOpen && page > 0;
+    backEl.classList.toggle('is-visible', show);
+    backEl.classList.toggle('is-dark', show && !leftDark(currentPages[page]));
   }
 
   /* Move both strips to a page: halves push in opposite directions
-     (page layout inverts the right strip's stacking order). */
+     (page layout inverts the right strip's stacking order). A video page
+     is the exception — the strips hold on the previous spread while the
+     video overlay slides in as one whole unit over the top. */
   function goToPage(p) {
-    page = Math.max(0, Math.min(PAGE_COUNT - 1, p));
-    stripLeft.style.transform = 'translateY(' + (-page * 100) + '%)';
-    stripRight.style.transform = 'translateY(' + (page * 100) + '%)';
+    page = Math.max(0, Math.min(currentPages.length - 1, p));
+    const pg = currentPages[page];
+    const isVideo = !!pg && pg.type === 'video-full';
+    const stripIdx = isVideo ? page - 1 : page;
+    stripLeft.style.transform = 'translateY(' + (-stripIdx * 100) + '%)';
+    stripRight.style.transform = 'translateY(' + (stripIdx * 100) + '%)';
+    videoOverlay.classList.toggle('is-in', isVideo);
     // Flip the logo (and reveal the back arrow) as the page slides in.
     setTimeout(updateLogoTheme, PUSH_MS * 0.45);
     updateBackArrow();
   }
 
-  /* Reset the strips to page 0 without animating. */
+  /* Reset the strips (and the video overlay) to page 0 without animating. */
   function resetStrips() {
     stripLeft.style.transition = 'none';
     stripRight.style.transition = 'none';
+    videoOverlay.style.transition = 'none';
     goToPage(0);
     void stripLeft.offsetHeight;
     stripLeft.style.transition = '';
     stripRight.style.transition = '';
+    videoOverlay.style.transition = '';
   }
 
   function openProject() {
@@ -267,12 +407,9 @@
     hideTag();
     clearActiveCues();
 
-    // Load the rest of the active project's set for the further pages.
-    const folder = PROJECTS[scroller.wrap(scroller.pos)].image
-      .replace(/\/[^/]+$/, '');
-    pageImgs.p1Left.src = folder + '/02.jpg';
-    pageImgs.p1Right.src = folder + '/03.jpg';
-    pageImgs.p2Left.src = folder + '/04.jpg';
+    // Build this project's page sequence (bespoke, or the default three).
+    const project = PROJECTS[scroller.wrap(scroller.pos)];
+    buildProjectPages(project.pages || defaultPages(project));
 
     resetStrips();
     splitEl.classList.add('is-project-open');
@@ -375,7 +512,7 @@
     if (!projectOpen || !heroDocked || menuOpen) return;
     if (now - pagerLastFire < PUSH_MS + 200) return;   // still settling
     const next = page + dir;
-    if (next < 0 || next >= PAGE_COUNT) return;
+    if (next < 0 || next >= currentPages.length) return;
     pagerLastFire = now;
     goToPage(next);
   }

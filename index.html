@@ -164,8 +164,8 @@
 
   <!-- Loading animation: two full-bleed halves + breathing wordmark -->
   <div class="loader" id="loader">
-    <div class="loader__half loader__half--left"><img id="loader-img-left" alt=""></div>
-    <div class="loader__half loader__half--right"><img id="loader-img-right" alt=""></div>
+    <div class="loader__half loader__half--left"><img id="loader-img-left" alt="" decoding="async" fetchpriority="high"></div>
+    <div class="loader__half loader__half--right"><img id="loader-img-right" alt="" decoding="async" fetchpriority="high"></div>
     <span class="loader__word" id="loader-word" role="img"
           aria-label="Stasis"></span>
     <div class="loader__cue" id="loader-cue" aria-hidden="true">

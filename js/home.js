@@ -106,6 +106,7 @@
     thumb.className = 'carousel__slot';
     const img = document.createElement('img');
     img.alt = '';
+    img.decoding = 'async';
     thumb.appendChild(img);
     const overlay = document.createElement('div');
     overlay.className = 'carousel__overlay';
@@ -274,6 +275,7 @@
     const img = document.createElement('img');
     img.className = cls;
     img.alt = '';
+    img.decoding = 'async';    // decode off the main thread — no push jank
     img.src = encodeURI(src);
     return img;
   }
@@ -288,12 +290,10 @@
     v.src = encodeURI(src);
     v.muted = true;            // required for autoplay
     v.loop = true;
-    v.autoplay = true;
     v.playsInline = true;
     v.setAttribute('playsinline', '');
-    v.preload = 'auto';
+    v.preload = 'auto';        // buffer ahead; playback starts on its page
     videoOverlay.appendChild(v);
-    v.play().catch(function () {});
   }
 
   function makeQuote() {
@@ -383,6 +383,11 @@
     stripLeft.style.transform = 'translateY(' + (-stripIdx * 100) + '%)';
     stripRight.style.transform = 'translateY(' + (stripIdx * 100) + '%)';
     videoOverlay.classList.toggle('is-in', isVideo);
+    // Only decode the video while it is the active page.
+    const vid = videoOverlay.firstChild;
+    if (vid && vid.tagName === 'VIDEO') {
+      if (isVideo) vid.play().catch(function () {}); else vid.pause();
+    }
     // Flip the logo (and reveal the back arrow) as the page slides in.
     setTimeout(updateLogoTheme, PUSH_MS * 0.45);
     updateBackArrow();

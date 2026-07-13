@@ -684,12 +684,21 @@
   // Preload every thumbnail so wrapped slots never flash empty.
   for (const p of PROJECTS) { new Image().src = p.image; }
 
+  // The carousel opens on this project (found by name so it survives
+  // any reordering of PROJECTS).
+  const START_INDEX = Math.max(0,
+    PROJECTS.findIndex(function (p) { return p.name === 'Gallatin Grange'; }));
+
   const scroller = new SplitScroll({
     length: N,
     onRender: render,
     onMoveStart: function () { hideTag(); clearActiveCues(); },
     onSettle: function (index) { showTag(index); setActiveCues(); },
   });
+
+  // Seat the carousel on the starting project before the first paint.
+  scroller.pos = START_INDEX;
+  scroller.target = START_INDEX;
 
   // Clicking the centred thumbnail or the active title opens the project.
   for (let i = 0; i < SLOTS; i++) {
@@ -747,8 +756,8 @@
     }
   });
 
-  render(0);
-  showTag(0);
+  render(START_INDEX);
+  showTag(scroller.wrap(START_INDEX));
   setActiveCues();
 
   /* ---------- landing page (initial load, and menu Home) ---------- */

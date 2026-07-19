@@ -37,6 +37,19 @@
     { type: 'video-full',  video: GG_IMG.leaves },
   ];
 
+  const PM = '00 Visuals/02 Visuals_Projects/04 Pearl Museum/';
+  const PM_IMG = {
+    family: PM + 'Emirati_kid_dropping_pearls_water_202607191139.jpeg',
+    ballet: PM + 'Human_figure_ballet_pose_yellow_202607191210.jpeg',
+    couple: PM + 'Arab_couple_enjoying_architecture_4K_202607191157.jpeg',
+    aqua:   PM + 'Aqua_water_with_pearls_4K_202607191146.jpeg',
+  };
+  const PEARL_PAGES = [
+    { type: 'hero' },
+    { type: 'full',        image: PM_IMG.ballet },
+    { type: 'bleed-inset', left: PM_IMG.couple, inset: PM_IMG.aqua },
+  ];
+
   // Title = project name, sub-heading = location. Visuals are reused
   // from the five placeholder sets until each project gets its own;
   // projects with an explicit `pages` array drive a bespoke sequence.
@@ -44,7 +57,7 @@
     { name: 'Catskills Retreat',     location: 'Catskills Range, New York',       image: '00 Visuals/project-01/01.jpg' },
     { name: 'Heard Falkenstern',     location: 'Portland, Oregon',                image: '00 Visuals/project-02/01.jpg' },
     { name: 'Fort Greene Townhouse', location: 'Brooklyn, New York',              image: '00 Visuals/project-03/01.jpg' },
-    { name: 'Pearl Museum',          location: 'Abu Dhabi, United Arab Emirates', image: '00 Visuals/project-04/01.jpg' },
+    { name: 'Pearl Museum',          location: 'Abu Dhabi, United Arab Emirates', image: PM_IMG.family, pages: PEARL_PAGES },
     { name: 'Findlay',               location: 'Cincinnati, Ohio',                image: '00 Visuals/project-05/01.jpg' },
     { name: 'Batavia Farm',          location: 'Cincinnati, Ohio',                image: '00 Visuals/project-01/01.jpg' },
     { name: 'Gallatin Grange',       location: 'Columbia County, New York',       image: GG_IMG.hero, pages: GALLATIN_PAGES },
@@ -72,7 +85,7 @@
   const stripLeft = document.getElementById('ppages-left');
   const stripRight = document.getElementById('ppages-right');
   const heroDock = document.getElementById('hero-dock');
-  const videoOverlay = document.getElementById('project-video');
+  const mediaOverlay = document.getElementById('project-media');
 
   const logoEl = document.querySelector('.site-header__logo');
   const backEl = document.getElementById('project-back');
@@ -250,6 +263,8 @@
   const PUSH_MS = 1150;       // slower, more drawn-out than the home carousel
 
   let currentPages = [];      // the open project's page sequence
+  let pageSlot = [];          // page index -> strip slot (-1 for overlay pages)
+  let overlayMedia = {};      // page index -> media element in the overlay
 
   /* The default sequence when a project has no bespoke `pages`: hero,
      then a bleed+inset spread, then a bleed+quote spread. */
@@ -280,20 +295,23 @@
     return img;
   }
 
-  /* Fill the full-screen video layer with a single clip. Unlike the
-     split image pages, the video moves as one whole unit, so it lives in
-     its own overlay rather than the two counter-moving strips. */
-  function setupVideoOverlay(src) {
-    videoOverlay.innerHTML = '';
+  /* Full-bleed pages (a still image or a video) don't split across the
+     two counter-moving strips — they ride a single full-screen overlay
+     that slides as one whole plane. */
+  function isOverlayType(pg) {
+    return !!pg && (pg.type === 'full' || pg.type === 'video-full');
+  }
+
+  function makeVideoEl(src) {
     const v = document.createElement('video');
-    v.className = 'project-video__el';
+    v.className = 'project-media__el is-hidden';
     v.src = encodeURI(src);
     v.muted = true;            // required for autoplay
     v.loop = true;
     v.playsInline = true;
     v.setAttribute('playsinline', '');
     v.preload = 'auto';        // buffer ahead; playback starts on its page
-    videoOverlay.appendChild(v);
+    return v;
   }
 
   function makeQuote() {
@@ -306,38 +324,50 @@
     return q;
   }
 
-  /* Build the strip children (index 1..n) for the given page sequence.
-     Index 0 (copy block on the left, hero dock on the right) is the
-     static markup and is left in place. */
+  /* Build the strip children for split pages and the overlay media for
+     full-bleed pages. Index 0 (copy block on the left, hero dock on the
+     right) is the static markup and is left in place.
+
+     Split pages take sequential strip slots; overlay pages take none, so
+     `pageSlot` maps every page to the strip position that should show
+     behind it. */
   function buildProjectPages(pages) {
     currentPages = pages;
+    pageSlot = [];
+    overlayMedia = {};
     while (stripLeft.children.length > 1) stripLeft.lastChild.remove();
     while (stripRight.children.length > 1) stripRight.lastChild.remove();
-    videoOverlay.classList.remove('is-in');
-    videoOverlay.innerHTML = '';
+    mediaOverlay.innerHTML = '';
 
-    for (let k = 1; k < pages.length; k++) {
+    let slot = 0;
+    for (let k = 0; k < pages.length; k++) {
       const pg = pages[k];
 
-      // The video is a whole-unit overlay, not a split strip page.
-      if (pg.type === 'video-full') {
-        setupVideoOverlay(pg.video);
+      // Full-bleed page: build its overlay media, and hold the strips on
+      // the last split page seen so something coherent sits behind it.
+      if (isOverlayType(pg)) {
+        pageSlot[k] = Math.max(0, slot - 1);
+        const el = pg.type === 'video-full'
+          ? makeVideoEl(pg.video)
+          : makeImg('project-media__el is-hidden', pg.image);
+        mediaOverlay.appendChild(el);
+        overlayMedia[k] = el;
         continue;
       }
 
+      pageSlot[k] = slot;
+      const s = slot;
+      slot++;
+      if (k === 0) continue;    // page 0 is the static hero/copy markup
+
       const l = document.createElement('div');
       l.className = 'ppage';
-      l.style.top = (k * 100) + '%';
+      l.style.top = (s * 100) + '%';
       const r = document.createElement('div');
       r.className = 'ppage';
-      r.style.top = (-k * 100) + '%';
+      r.style.top = (-s * 100) + '%';
 
-      if (pg.type === 'full') {
-        // One image split across both halves; the halves separate during
-        // the push and rejoin, seamless, when settled.
-        l.appendChild(makeImg('ppage__full ppage__full--left', pg.image));
-        r.appendChild(makeImg('ppage__full ppage__full--right', pg.image));
-      } else if (pg.type === 'bleed-inset') {
+      if (pg.type === 'bleed-inset') {
         l.appendChild(makeImg('ppage__bleed', pg.left));
         r.classList.add('ppage--white');
         r.appendChild(makeImg('ppage__inset', pg.inset));
@@ -371,38 +401,82 @@
     backEl.classList.toggle('is-dark', show && !leftDark(currentPages[page]));
   }
 
-  /* Move both strips to a page: halves push in opposite directions
-     (page layout inverts the right strip's stacking order). A video page
-     is the exception — the strips hold on the previous spread while the
-     video overlay slides in as one whole unit over the top. */
+  function setStripSlot(s) {
+    stripLeft.style.transform = 'translateY(' + (-s * 100) + '%)';
+    stripRight.style.transform = 'translateY(' + (s * 100) + '%)';
+  }
+
+  /* Show one overlay page's media, hide the rest; play/pause videos. */
+  function showOverlayMedia(activeIdx) {
+    Object.keys(overlayMedia).forEach(function (key) {
+      const el = overlayMedia[key];
+      const on = (+key === activeIdx);
+      el.classList.toggle('is-hidden', !on);
+      if (el.tagName === 'VIDEO') {
+        if (on) el.play().catch(function () {}); else el.pause();
+      }
+    });
+  }
+
+  /* Move to a page. Split pages push the two strips in opposite vertical
+     directions as before. Full-bleed pages (image or video) instead ride
+     the overlay, which slides as one whole plane — up to advance, down to
+     go back — while the strips hold a coherent spread behind it. */
   function goToPage(p) {
+    const prev = page;
     page = Math.max(0, Math.min(currentPages.length - 1, p));
+    const dir = page < prev ? -1 : 1;         // -1 reverse, +1 advance
     const pg = currentPages[page];
-    const isVideo = !!pg && pg.type === 'video-full';
-    const stripIdx = isVideo ? page - 1 : page;
-    stripLeft.style.transform = 'translateY(' + (-stripIdx * 100) + '%)';
-    stripRight.style.transform = 'translateY(' + (stripIdx * 100) + '%)';
-    videoOverlay.classList.toggle('is-in', isVideo);
-    // Only decode the video while it is the active page.
-    const vid = videoOverlay.firstChild;
-    if (vid && vid.tagName === 'VIDEO') {
-      if (isVideo) vid.play().catch(function () {}); else vid.pause();
+    const wasOverlay = isOverlayType(currentPages[prev]);
+
+    if (isOverlayType(pg)) {
+      // Enter the whole-plane overlay from the travelling side.
+      showOverlayMedia(page);
+      mediaOverlay.style.transition = 'none';
+      mediaOverlay.style.transform =
+        'translateY(' + (dir > 0 ? 100 : -100) + '%)';
+      void mediaOverlay.offsetHeight;
+      mediaOverlay.style.transition = '';
+      mediaOverlay.style.transform = 'translateY(0)';
+    } else {
+      if (wasOverlay) {
+        // Reposition the strips instantly behind the covering overlay,
+        // then slide the overlay off in the travel direction to reveal.
+        stripLeft.style.transition = 'none';
+        stripRight.style.transition = 'none';
+        setStripSlot(pageSlot[page]);
+        void stripLeft.offsetHeight;
+        stripLeft.style.transition = '';
+        stripRight.style.transition = '';
+        mediaOverlay.style.transform =
+          'translateY(' + (dir > 0 ? -100 : 100) + '%)';
+      } else {
+        setStripSlot(pageSlot[page]);
+      }
     }
+
     // Flip the logo (and reveal the back arrow) as the page slides in.
     setTimeout(updateLogoTheme, PUSH_MS * 0.45);
     updateBackArrow();
   }
 
-  /* Reset the strips (and the video overlay) to page 0 without animating. */
+  /* Reset the strips (and the media overlay) to page 0 without animating. */
   function resetStrips() {
     stripLeft.style.transition = 'none';
     stripRight.style.transition = 'none';
-    videoOverlay.style.transition = 'none';
-    goToPage(0);
+    mediaOverlay.style.transition = 'none';
+    page = 0;
+    setStripSlot(0);
+    mediaOverlay.style.transform = 'translateY(100%)';
+    Object.keys(overlayMedia).forEach(function (key) {
+      overlayMedia[key].classList.add('is-hidden');
+    });
     void stripLeft.offsetHeight;
     stripLeft.style.transition = '';
     stripRight.style.transition = '';
-    videoOverlay.style.transition = '';
+    mediaOverlay.style.transition = '';
+    updateLogoTheme();
+    updateBackArrow();
   }
 
   function openProject() {

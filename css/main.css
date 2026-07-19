@@ -319,7 +319,10 @@ img, canvas {
 
 /* Full-screen video layer. Spans the whole viewport and slides in as a
    single whole unit (not split like the image pages), over the strips. */
-.project-video {
+/* Full-bleed media (image or video) rides this single full-screen plane
+   and slides as one whole unit, instead of splitting across the panels.
+   Its transform is driven inline from JS (parked off-screen, slid to 0). */
+.project-media {
   position: absolute;
   inset: 0;
   z-index: 7;
@@ -329,27 +332,15 @@ img, canvas {
   will-change: transform;
 }
 
-.project-video.is-in { transform: translateY(0); }
-
-.project-video__el {
-  display: block;
+.project-media__el {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* One image spanning both halves: each panel holds the full image at
-   twice the panel width, offset to show its own half. */
-.ppage__full {
-  position: absolute;
-  top: 0;
-  width: 200%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.ppage__full--left  { left: 0; }
-.ppage__full--right { left: -100%; }
+.project-media__el.is-hidden { display: none; }
 
 /* Smaller image floating in generous white space. */
 .ppage__inset {

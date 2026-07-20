@@ -50,6 +50,28 @@
     { type: 'bleed-inset', left: PM_IMG.couple, inset: PM_IMG.aqua },
   ];
 
+  const HOB = '00 Visuals/02 Visuals_Projects/05 House on the Bluff/';
+  const HOB_IMG = {
+    man:      HOB + 'Man_walking_across_space_4K_202607191754.jpeg',
+    whiskey:  HOB + 'Whiskey_ice_leather_lounge_chair_202607191806.jpeg',
+    coastal:  HOB + 'Medium_telephoto_detail_shot_4K_202607191737.jpeg',
+    lamp:     HOB + 'Update_book_to_say_\'COASTAL_202607191858.jpeg',
+    dining:   HOB + 'Dining_room_detail_shot_4K_202607191841.jpeg',
+    living:   HOB + 'Architectural_photograph_in_Mons…_4K_202607191719.jpeg',
+    dogcouch: HOB + 'Dog_lying_on_couch_4K_202607191739.jpeg',
+    lantern:  HOB + 'Noguchi_lantern_with_glow_4K_202607191918.jpeg',
+    dogwoman: HOB + 'Dog_looking_at_woman_petting_202607191914.jpeg',
+  };
+  const BLUFF_PAGES = [
+    { type: 'hero' },
+    { type: 'bleed-quote', left: HOB_IMG.whiskey },
+    { type: 'full',        image: HOB_IMG.coastal },
+    { type: 'quote-bleed', right: HOB_IMG.lamp },
+    { type: 'full',        image: HOB_IMG.dining },
+    { type: 'bleed-inset', left: HOB_IMG.living, inset: HOB_IMG.dogcouch },
+    { type: 'inset-bleed', inset: HOB_IMG.lantern, right: HOB_IMG.dogwoman },
+  ];
+
   // Title = project name, sub-heading = location. Visuals are reused
   // from the five placeholder sets until each project gets its own;
   // projects with an explicit `pages` array drive a bespoke sequence.
@@ -62,7 +84,7 @@
     { name: 'Batavia Farm',          location: 'Cincinnati, Ohio',                image: '00 Visuals/project-01/01.jpg' },
     { name: 'Gallatin Grange',       location: 'Columbia County, New York',       image: GG_IMG.hero, pages: GALLATIN_PAGES },
     { name: 'Frame House',           location: 'East Hampton, New York',          image: '00 Visuals/project-03/01.jpg' },
-    { name: 'House on the Bluff',    location: 'Monsaraz, Portugal',              image: '00 Visuals/project-04/01.jpg' },
+    { name: 'House on the Bluff',    location: 'Monsaraz, Portugal',              image: HOB_IMG.man, pages: BLUFF_PAGES },
     { name: 'Snowmass',              location: 'Aspen, Colorado',                 image: '00 Visuals/project-05/01.jpg' },
   ];
 
@@ -375,6 +397,10 @@
         l.appendChild(makeImg('ppage__bleed', pg.left));
         r.classList.add('ppage--white');
         r.appendChild(makeQuote());
+      } else if (pg.type === 'quote-bleed') {
+        l.classList.add('ppage--white');
+        l.appendChild(makeQuote());
+        r.appendChild(makeImg('ppage__bleed', pg.right));
       } else if (pg.type === 'inset-bleed') {
         l.classList.add('ppage--white');
         l.appendChild(makeImg('ppage__inset', pg.inset));

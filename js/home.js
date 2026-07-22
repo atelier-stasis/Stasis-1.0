@@ -123,6 +123,12 @@
   let page = 0;               // current project page (0..PAGE_COUNT-1)
   let menuOpen = false;
 
+  /* Mobile stacks the two panels into a single column (names/text on top,
+     image on the bottom) but keeps the exact same opposite-vertical push.
+     Desktop layout and behaviour are untouched. */
+  const MOBILE_MQ = window.matchMedia('(max-width: 768px)');
+  let isMobile = MOBILE_MQ.matches;
+
   /* ---------- build slots ---------- */
 
   const nameSlots = [];
@@ -157,19 +163,32 @@
 
   const M = {};
   function measure() {
-    M.panelH = window.innerHeight;
-    M.panelW = window.innerWidth / 2;
+    // A panel is half the viewport: its width on desktop (side-by-side),
+    // its height on mobile (stacked top/bottom).
+    if (isMobile) {
+      M.panelW = window.innerWidth;
+      M.panelH = window.innerHeight / 2;
+    } else {
+      M.panelH = window.innerHeight;
+      M.panelW = window.innerWidth / 2;
+    }
     // Row height scales with the display size so the list breathes.
     const fontPx = parseFloat(getComputedStyle(nameSlots[0].title).fontSize);
-    M.rowH = Math.max(128, fontPx * 2.15);
-    M.tagOffset = fontPx * 0.66;
-    // Main thumbnail: portrait 3:4, capped by both panel height and width.
-    M.thumbW = Math.round(Math.min(M.panelH * 0.62 * 0.75, M.panelW * 0.58));
-    M.thumbH = Math.round(M.thumbW / 0.75);
+    M.rowH = isMobile ? Math.max(64, fontPx * 1.9) : Math.max(128, fontPx * 2.15);
+    M.tagOffset = fontPx * (isMobile ? 1.5 : 0.66);
+    if (isMobile) {
+      // Main thumbnail fills most of the bottom panel, capped by width.
+      M.thumbH = Math.round(Math.min(M.panelH * 0.82, M.panelW * 0.86 / 0.75));
+      M.thumbW = Math.round(M.thumbH * 0.75);
+    } else {
+      // Main thumbnail: portrait 3:4, capped by both panel height and width.
+      M.thumbW = Math.round(Math.min(M.panelH * 0.62 * 0.75, M.panelW * 0.58));
+      M.thumbH = Math.round(M.thumbW / 0.75);
+    }
     // Spacing leaves a calm gap after the main image while keeping the
     // neighbours cropped by the panel edges.
     M.thumbSpacing = M.thumbH * (0.5 + THUMB_SCALE / 2) +
-      Math.max(28, M.panelH * 0.05);
+      Math.max(isMobile ? 16 : 28, M.panelH * (isMobile ? 0.06 : 0.05));
 
     for (let i = 0; i < thumbSlots.length; i++) {
       const t = thumbSlots[i];
@@ -299,11 +318,15 @@
     ];
   }
 
-  /* Whether a page's LEFT half is a photograph (needs the white logo and
-     the light back arrow) rather than white ground. */
+  /* Whether the TOP-LEFT corner sits over a photograph (needs the white
+     logo). On desktop that's the left half; on mobile it's the top strip,
+     which only holds an image on full-bleed pages (the white/text half is
+     always on top for split pages). */
   function leftDark(pg) {
-    return !!pg && (pg.type === 'full' || pg.type === 'video-full' ||
-      pg.type === 'bleed-inset' || pg.type === 'bleed-quote');
+    if (!pg) return false;
+    if (pg.type === 'full' || pg.type === 'video-full') return true;
+    if (isMobile) return false;   // split pages: top strip is white on mobile
+    return pg.type === 'bleed-inset' || pg.type === 'bleed-quote';
   }
 
   /* ---------- page DOM builders ---------- */
@@ -389,22 +412,40 @@
       r.className = 'ppage';
       r.style.top = (-s * 100) + '%';
 
+      // Resolve each split page into its full-bleed image and its
+      // white (quote/inset) half, plus which side the image sits on for
+      // desktop. Mobile always puts the image in the bottom (right) strip
+      // and the white half on top (left), per the single-column layout.
+      let imageEl = null, whiteEl = null, deskImageLeft = false;
       if (pg.type === 'bleed-inset') {
-        l.appendChild(makeImg('ppage__bleed', pg.left));
-        r.classList.add('ppage--white');
-        r.appendChild(makeImg('ppage__inset', pg.inset));
+        imageEl = makeImg('ppage__bleed', pg.left);
+        whiteEl = makeImg('ppage__inset', pg.inset);
+        deskImageLeft = true;
       } else if (pg.type === 'bleed-quote') {
-        l.appendChild(makeImg('ppage__bleed', pg.left));
-        r.classList.add('ppage--white');
-        r.appendChild(makeQuote());
+        imageEl = makeImg('ppage__bleed', pg.left);
+        whiteEl = makeQuote();
+        deskImageLeft = true;
       } else if (pg.type === 'quote-bleed') {
-        l.classList.add('ppage--white');
-        l.appendChild(makeQuote());
-        r.appendChild(makeImg('ppage__bleed', pg.right));
+        imageEl = makeImg('ppage__bleed', pg.right);
+        whiteEl = makeQuote();
+        deskImageLeft = false;
       } else if (pg.type === 'inset-bleed') {
-        l.classList.add('ppage--white');
-        l.appendChild(makeImg('ppage__inset', pg.inset));
-        r.appendChild(makeImg('ppage__bleed', pg.right));
+        imageEl = makeImg('ppage__bleed', pg.right);
+        whiteEl = makeImg('ppage__inset', pg.inset);
+        deskImageLeft = false;
+      }
+
+      if (imageEl) {
+        const imageLeft = isMobile ? false : deskImageLeft;
+        if (imageLeft) {
+          l.appendChild(imageEl);
+          r.classList.add('ppage--white');
+          r.appendChild(whiteEl);
+        } else {
+          l.classList.add('ppage--white');
+          l.appendChild(whiteEl);
+          r.appendChild(imageEl);
+        }
       }
       stripLeft.appendChild(l);
       stripRight.appendChild(r);
@@ -424,7 +465,10 @@
   function updateBackArrow() {
     const show = projectOpen && page > 0;
     backEl.classList.toggle('is-visible', show);
-    backEl.classList.toggle('is-dark', show && !leftDark(currentPages[page]));
+    // The arrow sits bottom-left. On mobile that's the bottom strip, which
+    // always holds the image, so the arrow stays light there.
+    const dark = !isMobile && !leftDark(currentPages[page]);
+    backEl.classList.toggle('is-dark', show && dark);
   }
 
   function setStripSlot(s) {
@@ -776,10 +820,27 @@
   /* ---------- boot ---------- */
 
   measure();
-  window.addEventListener('resize', () => {
+
+  // Re-measure on resize; when crossing the mobile breakpoint, re-lay the
+  // open project's split pages for the new orientation.
+  function handleViewportChange() {
+    const nowMobile = MOBILE_MQ.matches;
+    const crossed = nowMobile !== isMobile;
+    isMobile = nowMobile;
     measure();
+    if (crossed && projectOpen && heroDocked) {
+      const p = page;
+      buildProjectPages(currentPages);
+      resetStrips();
+      goToPage(p);
+    }
     render(scroller.pos);
-  });
+    if (projectOpen) updateLogoTheme();
+  }
+  window.addEventListener('resize', handleViewportChange);
+  if (MOBILE_MQ.addEventListener) {
+    MOBILE_MQ.addEventListener('change', handleViewportChange);
+  }
 
   // Preload every thumbnail so wrapped slots never flash empty.
   for (const p of PROJECTS) { new Image().src = p.image; }

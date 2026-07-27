@@ -72,20 +72,66 @@
     { type: 'inset-bleed', inset: HOB_IMG.lantern, right: HOB_IMG.dogwoman },
   ];
 
+  const FG = '00 Visuals/02 Visuals_Projects/03 Fort Greene/';
+  const FG_IMG = {
+    plant:        FG + 'Woman_tending_to_plant_4K_202607261345.jpeg',
+    living:       FG + 'White_framed_windows_add_character_202607261505.jpeg',
+    fireplace:    FG + 'Fireplace_detail_and_couch_4K_202607261510 copy.jpg',
+    pendant:      FG + 'Dining_table_pendant_brass_refle…_202607261517.jpeg',
+    kitchen:      FG + 'Architectural_shot_of_kitchen_4K_202607261530.jpeg',
+    bedroom:      FG + 'Change_fireplace_tile_surround_4K_202607261525.jpeg',
+    faucet:       FG + 'Reduce_faucet_length_a_little_202607261401.jpeg',
+    powder:       FG + 'Architectural_photograph_Brookly…_4K_202607261357.jpeg',
+    hallway:      FG + 'Architectural_photograph_Brookly…_4K_202607261412.jpeg',
+    vanity:       FG + 'Local_project_norm_architect_style_202607261447.jpeg',
+    vanityDetail: FG + 'Oak_cabinet_countertop_fixture_d…_202607261455.jpeg',
+  };
+  const FORT_GREENE_PAGES = [
+    { type: 'hero' },
+    { type: 'full',        image: FG_IMG.living },
+    { type: 'bleed-inset', left: FG_IMG.fireplace, inset: FG_IMG.pendant },
+    { type: 'bleed-quote', left: FG_IMG.kitchen },
+    { type: 'full',        image: FG_IMG.bedroom },
+    { type: 'inset-bleed', inset: FG_IMG.faucet,   right: FG_IMG.powder },
+    { type: 'bleed-quote', left: FG_IMG.hallway },
+    { type: 'bleed-inset', left: FG_IMG.vanity,    inset: FG_IMG.vanityDetail },
+  ];
+
+  const FP = '00 Visuals/02 Visuals_Projects/06 Findlay Park/';
+  const FP_IMG = {
+    scooter:   FP + 'kid scooter.jpg',
+    welcome:   FP + 'Update_cladding_panel_per_reference_202607261642 v2.jpg',
+    couple:    FP + 'Couple_sitting_on_bench_4K_202607261744.jpeg',
+    flowers:   FP + 'Wildflowers_with_out_of_focus_202607261736.jpeg',
+    lake:      FP + 'Architectural_photograph_Cincinn…_4K_202607261751.jpeg',
+    yoga:      FP + 'Zoom_further_detail_telephoto_shot_202607261827.jpeg',
+    morning:   FP + 'Architecture_pavilion_early_morn…_4K_202607261815.jpeg',
+    concert:   FP + 'Night_event_photography_classica…_4K_202607261837.jpeg',
+    cello:     FP + 'Cello Player.jpg',
+    kidteddy:  FP + 'Kid_enjoying_concert_holding_ted…_202607261846.jpeg',
+  };
+  const FINDLAY_PAGES = [
+    { type: 'hero' },
+    { type: 'full',        image: FP_IMG.welcome },
+    { type: 'bleed-inset', left: FP_IMG.couple, inset: FP_IMG.flowers },
+    { type: 'full',        image: FP_IMG.lake },
+    { type: 'inset-bleed', inset: FP_IMG.yoga,  right: FP_IMG.morning },
+    { type: 'full',        image: FP_IMG.concert },
+    { type: 'bleed-inset', left: FP_IMG.cello,  inset: FP_IMG.kidteddy },
+  ];
+
   // Title = project name, sub-heading = location. Visuals are reused
   // from the five placeholder sets until each project gets its own;
   // projects with an explicit `pages` array drive a bespoke sequence.
   const PROJECTS = [
-    { name: 'Catskills Retreat',     location: 'Catskills Range, New York',       image: '00 Visuals/project-01/01.jpg' },
     { name: 'Heard Falkenstern',     location: 'Portland, Oregon',                image: '00 Visuals/project-02/01.jpg' },
-    { name: 'Fort Greene Townhouse', location: 'Brooklyn, New York',              image: '00 Visuals/project-03/01.jpg' },
+    { name: 'Fort Greene Townhouse', location: 'Brooklyn, New York',              image: FG_IMG.plant, pages: FORT_GREENE_PAGES },
     { name: 'Pearl Museum',          location: 'Abu Dhabi, United Arab Emirates', image: PM_IMG.family, pages: PEARL_PAGES },
-    { name: 'Findlay',               location: 'Cincinnati, Ohio',                image: '00 Visuals/project-05/01.jpg' },
+    { name: 'Findlay',               location: 'Cincinnati, Ohio',                image: FP_IMG.scooter, pages: FINDLAY_PAGES },
     { name: 'Batavia Farm',          location: 'Cincinnati, Ohio',                image: '00 Visuals/project-01/01.jpg' },
     { name: 'Gallatin Grange',       location: 'Columbia County, New York',       image: GG_IMG.hero, pages: GALLATIN_PAGES },
     { name: 'Frame House',           location: 'East Hampton, New York',          image: '00 Visuals/project-03/01.jpg' },
     { name: 'House on the Bluff',    location: 'Monsaraz, Portugal',              image: HOB_IMG.man, pages: BLUFF_PAGES },
-    { name: 'Snowmass',              location: 'Aspen, Colorado',                 image: '00 Visuals/project-05/01.jpg' },
   ];
 
   const N = PROJECTS.length;

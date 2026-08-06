@@ -120,30 +120,10 @@
     { type: 'bleed-inset', left: FP_IMG.cello,  inset: FP_IMG.kidteddy },
   ];
 
-  const BF = '00 Visuals/02 Visuals_Projects/07 Batavia Farm/';
-  const BF_IMG = {
-    piano:    BF + 'Add_framed_trees_foreground_4K_202607262034.jpeg',
-    aerial:   BF + 'Architectural_photograph_Batavia…_4K_202607262006.jpeg',
-    exterior: BF + 'Remove_fireplace_below_roof_4K_202607262048.jpeg',
-    ferns:    BF + 'Macro_photography_natural_landsc…_4K_202607262050.jpeg',
-    violin:   BF + 'Musician_framed_by_architecture_4K_202607262142 (1).jpeg',
-    kitchen:  BF + 'Man_in_kitchen_4K_202607262112.jpeg',
-    living:   BF + 'Sunlight_dappled_light_frontal_shot_202607262109.jpeg',
-    coffee:   BF + 'Coffee_table_decor_frontal_view_202607262135.jpeg',
-    winter:   BF + 'Scene_in_winter_4K_202607262127.jpeg',
-  };
-  const BATAVIA_PAGES = [
-    { type: 'hero' },
-    { type: 'full',        image: BF_IMG.aerial },
-    { type: 'bleed-inset', left: BF_IMG.exterior, inset: BF_IMG.ferns },
-    { type: 'full',        image: BF_IMG.violin },
-    { type: 'inset-bleed', inset: BF_IMG.kitchen, right: BF_IMG.living },
-    { type: 'bleed-inset', left: BF_IMG.coffee,   inset: BF_IMG.winter },
-  ];
-
   const FR = '00 Visuals/02 Visuals_Projects/08 Frame House/';
   const FR_IMG = {
     car:      FR + 'Car_in_focus_building_behind_202608052056.jpeg',
+    sail:     FR + 'Woman_sailor_African_American_4K_202608052321.jpeg',
     meadow:   FR + 'Add_more_meadowy_grass_4K_202608052039.jpeg',
     wildflor: FR + 'Telephoto_landscape_foreground_b…_4K_202608052051.jpeg',
     facade:   FR + 'Detail_telephoto_shot_architecture_4K_202608052112.jpeg',
@@ -156,7 +136,7 @@
   const FRAME_PAGES = [
     { type: 'hero' },
     { type: 'full',        image: FR_IMG.meadow },
-    { type: 'bleed-inset', left: FR_IMG.wildflor, inset: FR_IMG.facade },
+    { type: 'bleed-inset', left: FR_IMG.facade, inset: FR_IMG.car },
     { type: 'bleed-quote', left: FR_IMG.glass },
     { type: 'full',        image: FR_IMG.dusk },
     { type: 'inset-bleed', inset: FR_IMG.dining,  right: FR_IMG.living },
@@ -171,10 +151,12 @@
     { name: 'Fort Greene Townhouse', location: 'Brooklyn, New York',              image: FG_IMG.plant, pages: FORT_GREENE_PAGES },
     { name: 'Pearl Museum',          location: 'Abu Dhabi, United Arab Emirates', image: PM_IMG.family, pages: PEARL_PAGES },
     { name: 'Findlay',               location: 'Cincinnati, Ohio',                image: FP_IMG.scooter, pages: FINDLAY_PAGES },
-    { name: 'Batavia Farm',          location: 'Cincinnati, Ohio',                image: BF_IMG.piano, pages: BATAVIA_PAGES },
     { name: 'Gallatin Grange',       location: 'Columbia County, New York',       image: GG_IMG.hero, pages: GALLATIN_PAGES },
-    { name: 'Frame House',           location: 'East Hampton, New York',          image: FR_IMG.car, pages: FRAME_PAGES },
+    { name: 'Frame House',           location: 'East Hampton, New York',          image: FR_IMG.sail, pages: FRAME_PAGES },
     { name: 'House on the Bluff',    location: 'Monsaraz, Portugal',              image: HOB_IMG.man, pages: BLUFF_PAGES },
+    { name: 'Millerton House',       location: 'Catskills, New York',             image: '00 Visuals/project-01/01.jpg' },
+    { name: 'Naalukettu',            location: 'Kerala, India',                   image: '00 Visuals/project-04/01.jpg' },
+    { name: 'Stanfield Farm',        location: 'Cincinnati, Ohio',                image: '00 Visuals/project-03/01.jpg' },
   ];
 
   const N = PROJECTS.length;

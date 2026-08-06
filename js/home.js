@@ -141,6 +141,28 @@
     { type: 'bleed-inset', left: BF_IMG.coffee,   inset: BF_IMG.winter },
   ];
 
+  const FR = '00 Visuals/02 Visuals_Projects/08 Frame House/';
+  const FR_IMG = {
+    car:      FR + 'Car_in_focus_building_behind_202608052056.jpeg',
+    meadow:   FR + 'Add_more_meadowy_grass_4K_202608052039.jpeg',
+    wildflor: FR + 'Telephoto_landscape_foreground_b…_4K_202608052051.jpeg',
+    facade:   FR + 'Detail_telephoto_shot_architecture_4K_202608052112.jpeg',
+    glass:    FR + 'Building_facade_window_detail_4K_202608052109.jpeg',
+    dusk:     FR + 'Architectural_photograph_East_Ha…_4K_202608052123.jpeg',
+    dining:   FR + 'Dining_table_and_chair_shot_202608052202.jpeg',
+    living:   FR + 'Telephoto_interior_design_photog…_4K_202608052156.jpeg',
+    aerial:   FR + 'Remove_house_replace_trees_4K_202608052225.jpeg',
+  };
+  const FRAME_PAGES = [
+    { type: 'hero' },
+    { type: 'full',        image: FR_IMG.meadow },
+    { type: 'bleed-inset', left: FR_IMG.wildflor, inset: FR_IMG.facade },
+    { type: 'bleed-quote', left: FR_IMG.glass },
+    { type: 'full',        image: FR_IMG.dusk },
+    { type: 'inset-bleed', inset: FR_IMG.dining,  right: FR_IMG.living },
+    { type: 'full',        image: FR_IMG.aerial },
+  ];
+
   // Title = project name, sub-heading = location. Visuals are reused
   // from the five placeholder sets until each project gets its own;
   // projects with an explicit `pages` array drive a bespoke sequence.
@@ -151,7 +173,7 @@
     { name: 'Findlay',               location: 'Cincinnati, Ohio',                image: FP_IMG.scooter, pages: FINDLAY_PAGES },
     { name: 'Batavia Farm',          location: 'Cincinnati, Ohio',                image: BF_IMG.piano, pages: BATAVIA_PAGES },
     { name: 'Gallatin Grange',       location: 'Columbia County, New York',       image: GG_IMG.hero, pages: GALLATIN_PAGES },
-    { name: 'Frame House',           location: 'East Hampton, New York',          image: '00 Visuals/project-03/01.jpg' },
+    { name: 'Frame House',           location: 'East Hampton, New York',          image: FR_IMG.car, pages: FRAME_PAGES },
     { name: 'House on the Bluff',    location: 'Monsaraz, Portugal',              image: HOB_IMG.man, pages: BLUFF_PAGES },
   ];
 

@@ -166,6 +166,22 @@
     { type: 'bleed-inset', left: NK_IMG.reading, inset: NK_IMG.lotus },
   ];
 
+  // Stanfield Farm — note the source filenames are misleading: the
+  // full-bleed spread is "Update_house_geometry" and the rearing-horse
+  // inset is "Cowboy_riding_horse_on_ranch".
+  const SF = '00 Visuals/02 Visuals_Projects/09 Stanfield Farm/';
+  const SF_IMG = {
+    leading: SF + 'Cowboy_pulling_horse_by_house_202608062214.jpeg',
+    house:   SF + 'Update_house_geometry_in_image_202608062257.jpeg',
+    barn:    SF + 'Remove_horse_on_right_4K_202608062231.jpeg',
+    rearing: SF + 'Cowboy_riding_horse_on_ranch_202608062225.jpeg',
+  };
+  const STANFIELD_PAGES = [
+    { type: 'hero' },
+    { type: 'full',        image: SF_IMG.house },
+    { type: 'bleed-inset', left: SF_IMG.barn, inset: SF_IMG.rearing },
+  ];
+
   // Title = project name, sub-heading = location. Visuals are reused
   // from the five placeholder sets until each project gets its own;
   // projects with an explicit `pages` array drive a bespoke sequence.
@@ -179,7 +195,7 @@
     { name: 'House on the Bluff',    location: 'Monsaraz, Portugal',              image: HOB_IMG.man, pages: BLUFF_PAGES },
     { name: 'Millerton House',       location: 'Catskills, New York',             image: '00 Visuals/project-01/01.jpg' },
     { name: 'Naalukettu',            location: 'Kerala, India',                   image: NK_IMG.saree, pages: NAALUKETTU_PAGES },
-    { name: 'Stanfield Farm',        location: 'Cincinnati, Ohio',                image: '00 Visuals/project-03/01.jpg' },
+    { name: 'Stanfield Farm',        location: 'Cincinnati, Ohio',                image: SF_IMG.leading, pages: STANFIELD_PAGES },
   ];
 
   const N = PROJECTS.length;

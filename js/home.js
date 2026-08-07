@@ -149,7 +149,7 @@
     aerial:   NK + 'Remove_white_architectural_photo…_4K_202608061811.jpeg',
     coconut:  NK + 'Person_climbing_coconut_tree_4K_202608061906.jpeg',
     dew:      NK + 'Dew_dripping_from_banana_leaves_202608061925.jpeg',
-    dancer:   NK + 'Dancer_striking_bharathanatyam_pose_4K_202608061913.jpeg',
+    dancer:   NK + 'dacer striking pose.jpg',
     ritual:   NK + 'Woman_performing_Hindu_ritual_4K_202608061944.jpeg',
     courtyard:NK + 'Decrease_incense_smoke_keep_rays_202608061934.jpeg',
     sisters:  NK + 'Sisters_playing_in_water_4K_202608062001 copy.jpg',

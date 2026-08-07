@@ -143,6 +143,29 @@
     { type: 'full',        image: FR_IMG.aerial },
   ];
 
+  const NK = '00 Visuals/02 Visuals_Projects/10 Naalukettu/';
+  const NK_IMG = {
+    saree:    NK + 'Woman_in_traditional_saree_4K_202608061712.jpeg',
+    aerial:   NK + 'Remove_white_architectural_photo…_4K_202608061811.jpeg',
+    coconut:  NK + 'Person_climbing_coconut_tree_4K_202608061906.jpeg',
+    dew:      NK + 'Dew_dripping_from_banana_leaves_202608061925.jpeg',
+    dancer:   NK + 'Dancer_striking_bharathanatyam_pose_4K_202608061913.jpeg',
+    ritual:   NK + 'Woman_performing_Hindu_ritual_4K_202608061944.jpeg',
+    courtyard:NK + 'Decrease_incense_smoke_keep_rays_202608061934.jpeg',
+    sisters:  NK + 'Sisters_playing_in_water_4K_202608062001 copy.jpg',
+    reading:  NK + 'Man_reading_newspaper_in_mundu_202608062019 copy.jpg',
+    lotus:    NK + 'Lotus_in_water_4K_202608062027.jpeg',
+  };
+  const NAALUKETTU_PAGES = [
+    { type: 'hero' },
+    { type: 'full',        image: NK_IMG.aerial },
+    { type: 'bleed-inset', left: NK_IMG.coconut, inset: NK_IMG.dew },
+    { type: 'bleed-quote', left: NK_IMG.dancer },
+    { type: 'inset-bleed', inset: NK_IMG.ritual, right: NK_IMG.courtyard },
+    { type: 'full',        image: NK_IMG.sisters },
+    { type: 'bleed-inset', left: NK_IMG.reading, inset: NK_IMG.lotus },
+  ];
+
   // Title = project name, sub-heading = location. Visuals are reused
   // from the five placeholder sets until each project gets its own;
   // projects with an explicit `pages` array drive a bespoke sequence.
@@ -155,7 +178,7 @@
     { name: 'Frame House',           location: 'East Hampton, New York',          image: FR_IMG.sail, pages: FRAME_PAGES },
     { name: 'House on the Bluff',    location: 'Monsaraz, Portugal',              image: HOB_IMG.man, pages: BLUFF_PAGES },
     { name: 'Millerton House',       location: 'Catskills, New York',             image: '00 Visuals/project-01/01.jpg' },
-    { name: 'Naalukettu',            location: 'Kerala, India',                   image: '00 Visuals/project-04/01.jpg' },
+    { name: 'Naalukettu',            location: 'Kerala, India',                   image: NK_IMG.saree, pages: NAALUKETTU_PAGES },
     { name: 'Stanfield Farm',        location: 'Cincinnati, Ohio',                image: '00 Visuals/project-03/01.jpg' },
   ];
 

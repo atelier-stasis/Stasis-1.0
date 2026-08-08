@@ -124,6 +124,7 @@
   const FR_IMG = {
     car:      FR + 'Car_in_focus_building_behind_202608052056.jpeg',
     sail:     FR + 'Woman_sailor_African_American_4K_202608052321.jpeg',
+    beach:    FR + 'Person_on_beach_with_architecture_202608081602.jpeg',
     meadow:   FR + 'Add_more_meadowy_grass_4K_202608052039.jpeg',
     wildflor: FR + 'Telephoto_landscape_foreground_b…_4K_202608052051.jpeg',
     facade:   FR + 'Detail_telephoto_shot_architecture_4K_202608052112.jpeg',
@@ -191,7 +192,7 @@
     { name: 'Pearl Museum',          location: 'Abu Dhabi, United Arab Emirates', image: PM_IMG.family, pages: PEARL_PAGES },
     { name: 'Findlay',               location: 'Cincinnati, Ohio',                image: FP_IMG.scooter, pages: FINDLAY_PAGES },
     { name: 'Gallatin Grange',       location: 'Columbia County, New York',       image: GG_IMG.hero, pages: GALLATIN_PAGES },
-    { name: 'Frame House',           location: 'East Hampton, New York',          image: FR_IMG.sail, pages: FRAME_PAGES },
+    { name: 'Frame House',           location: 'East Hampton, New York',          image: FR_IMG.beach, pages: FRAME_PAGES },
     { name: 'House on the Bluff',    location: 'Monsaraz, Portugal',              image: HOB_IMG.man, pages: BLUFF_PAGES },
     { name: 'Millerton House',       location: 'Catskills, New York',             image: '00 Visuals/project-01/01.jpg' },
     { name: 'Naalukettu',            location: 'Kerala, India',                   image: NK_IMG.saree, pages: NAALUKETTU_PAGES },

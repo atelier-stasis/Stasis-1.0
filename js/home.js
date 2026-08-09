@@ -206,11 +206,42 @@
     { type: 'full',        image: MH_IMG.autumn },
   ];
 
+  // Heard Falkenstern (Portland loft). Filenames are noisy generative
+  // labels — verified against the layouts: _1845 is the console/mirror,
+  // _2215 the living room, _1859 the kitchen counter. Focal points bias
+  // downward where the subject sits low so it isn't clipped at 16:9.
+  const HF = '00 Visuals/02 Visuals_Projects/02 Heard Falkenstern/';
+  const HF_IMG = {
+    painter:  HF + 'Woman_painter_looking_outside_wi…_202608052330.jpeg',
+    fixture:  HF + 'Ceiling_fixture_with_glow_4K_202608060006.jpeg',
+    console:  HF + 'Architectural_digest_local_proje…_4K_202608081845.jpeg',
+    living:   HF + 'Architectural_photograph_in_Port…_4K_202607202215.jpeg',
+    coffee:   HF + 'Coffee_table_and_couch_decor_202607202214.jpeg',
+    chairDet: HF + 'Macro_shot_of_lounge_chair_202608082014.jpeg',
+    cat:      HF + 'Chair_and_cat_lying_4K_202607202105.jpeg',
+    woven:    HF + 'Chair_material_and_carpet_texture_202608081926.jpeg',
+    kitchen:  HF + 'Kitchen_island_with_green_tile_202608052344.jpeg',
+    plant:    HF + 'Focusing_on_plant_4K_202608081905.jpeg',
+    counter:  HF + 'Architectural_design_highlightin…_4K_202608081859.jpeg',
+    powder:   HF + 'Replace_flowers_with_avant_garde…_202608081930.jpeg',
+    blue:     HF + 'Blue_stand_on_red_flooring_202608081945.jpeg',
+  };
+  const HEARD_PAGES = [
+    { type: 'hero' },
+    { type: 'inset-bleed', inset: HF_IMG.fixture,  right: HF_IMG.console, bleedPos: '40% 55%' },
+    { type: 'bleed-inset', left: HF_IMG.living,    inset: HF_IMG.coffee,  bleedPos: '50% 52%' },
+    { type: 'inset-bleed', inset: HF_IMG.chairDet, right: HF_IMG.cat,     bleedPos: '52% 52%' },
+    { type: 'bleed-quote', left: HF_IMG.woven,     bleedPos: '45% 48%' },
+    { type: 'full',        image: HF_IMG.kitchen },
+    { type: 'inset-bleed', inset: HF_IMG.plant,    right: HF_IMG.counter, bleedPos: '55% 62%' },
+    { type: 'bleed-inset', left: HF_IMG.powder,    inset: HF_IMG.blue,    bleedPos: '50% 58%' },
+  ];
+
   // Title = project name, sub-heading = location. Visuals are reused
   // from the five placeholder sets until each project gets its own;
   // projects with an explicit `pages` array drive a bespoke sequence.
   const PROJECTS = [
-    { name: 'Heard Falkenstern',     location: 'Portland, Oregon',                image: '00 Visuals/project-02/01.jpg' },
+    { name: 'Heard Falkenstern',     location: 'Portland, Oregon',                image: HF_IMG.painter, imagePos: '55% 55%', pages: HEARD_PAGES },
     { name: 'Fort Greene Townhouse', location: 'Brooklyn, New York',              image: FG_IMG.plant, pages: FORT_GREENE_PAGES },
     { name: 'Pearl Museum',          location: 'Abu Dhabi, United Arab Emirates', image: PM_IMG.family, pages: PEARL_PAGES },
     { name: 'Findlay',               location: 'Cincinnati, Ohio',                image: FP_IMG.scooter, pages: FINDLAY_PAGES },

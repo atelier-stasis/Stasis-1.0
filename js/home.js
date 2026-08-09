@@ -19,13 +19,13 @@
        inset-bleed — centred inset on white (left) + full-bleed image (right) */
   const GG = '00 Visuals/02 Visuals_Projects/01 Gallatin Grange/';
   const GG_IMG = {
-    hero:    GG + 'Woman_looking_into_sunset_2K_202607121645.jpeg',
-    woods:   GG + 'Photo_from_woods_seeing_building_202607121644.jpeg',
-    facade:  GG + 'Building_through_tree_leaves_2K_202607121646.jpeg',
-    man:     GG + 'Man_in_minimal_clothing_architec…_202607121646.jpeg',
-    porsche: GG + 'Porsche_and_building_in_frame_202607121646.jpeg',
-    sunset:  GG + 'Woman_on_balcony_sunset_2K_202607121656.jpeg',
-    leaves:  GG + 'Leaves_moving_handheld_camera_202607121707.mp4',
+    hero:    '00 Visuals/02 Visuals_Projects/_Reduced/01 Gallatin Grange/Woman_looking_into_sunset_2K_202607121645 copy.webp',
+    woods:   '00 Visuals/02 Visuals_Projects/_Reduced/01 Gallatin Grange/Photo_from_woods_seeing_building_202607121644 copy.webp',
+    facade:  '00 Visuals/02 Visuals_Projects/_Reduced/01 Gallatin Grange/Building_through_tree_leaves_2K_202607121646 copy.webp',
+    man:     '00 Visuals/02 Visuals_Projects/_Reduced/01 Gallatin Grange/Man_in_minimal_clothing_architec…_202607121646 copy.webp',
+    porsche: '00 Visuals/02 Visuals_Projects/_Reduced/01 Gallatin Grange/Porsche_and_building_in_frame_202607121646 copy.webp',
+    sunset:  '00 Visuals/02 Visuals_Projects/_Reduced/01 Gallatin Grange/Woman_on_balcony_sunset_2K_202607121656 copy.webp',
+    leaves:  GG + 'remove_the_watermark._same_video_202608090152 (1).mp4',
   };
   const GALLATIN_PAGES = [
     { type: 'hero' },
@@ -33,16 +33,15 @@
     { type: 'bleed-inset', left: GG_IMG.facade,  inset: GG_IMG.man },
     { type: 'bleed-quote', left: GG_IMG.porsche },
     { type: 'full',        image: GG_IMG.sunset },
-    { type: 'inset-bleed', inset: GG_IMG.man,    right: GG_IMG.facade },
     { type: 'video-full',  video: GG_IMG.leaves },
   ];
 
   const PM = '00 Visuals/02 Visuals_Projects/04 Pearl Museum/';
   const PM_IMG = {
-    family: PM + 'Emirati_kid_dropping_pearls_water_202607191139.jpeg',
-    ballet: PM + 'Human_figure_ballet_pose_yellow_202607191210.jpeg',
-    couple: PM + 'Arab_couple_enjoying_architecture_4K_202608051820.jpeg',
-    aqua:   PM + 'Aqua_water_with_pearls_4K_202607191146.jpeg',
+    family: '00 Visuals/02 Visuals_Projects/_Reduced/04 Pearl Museum/Emirati_kid_dropping_pearls_water_202607191139 copy.webp',
+    ballet: '00 Visuals/02 Visuals_Projects/_Reduced/04 Pearl Museum/Human_figure_ballet_pose_yellow_202607191210 copy.webp',
+    couple: '00 Visuals/02 Visuals_Projects/_Reduced/04 Pearl Museum/Arab_couple_enjoying_architecture_4K_202608051820 copy.webp',
+    aqua:   '00 Visuals/02 Visuals_Projects/_Reduced/04 Pearl Museum/Aqua_water_with_pearls_4K_202607191146 copy.webp',
   };
   const PEARL_PAGES = [
     { type: 'hero' },
@@ -52,15 +51,15 @@
 
   const HOB = '00 Visuals/02 Visuals_Projects/05 House on the Bluff/';
   const HOB_IMG = {
-    man:      HOB + 'Man_walking_across_space_4K_202607191754.jpeg',
-    whiskey:  HOB + 'Whiskey_ice_leather_lounge_chair_202607191806.jpeg',
-    coastal:  HOB + 'Medium_telephoto_detail_shot_4K_202607191737.jpeg',
+    man:      '00 Visuals/02 Visuals_Projects/_Reduced/05 House on the Bluff/Man_walking_across_space_4K_202607191754 copy.webp',
+    whiskey:  '00 Visuals/02 Visuals_Projects/_Reduced/05 House on the Bluff/Whiskey_ice_leather_lounge_chair_202607191806 copy.webp',
+    coastal:  '00 Visuals/02 Visuals_Projects/_Reduced/05 House on the Bluff/Medium_telephoto_detail_shot_4K_202607191737 copy.webp',
     lamp:     HOB + 'Update_book_to_say_\'COASTAL_202607191858.jpeg',
-    dining:   HOB + 'Dining_room_detail_shot_4K_202607191841.jpeg',
-    living:   HOB + 'Architectural_photograph_in_Mons…_4K_202607191719.jpeg',
-    dogcouch: HOB + 'Dog_lying_on_couch_4K_202607191739.jpeg',
-    lantern:  HOB + 'Noguchi_lantern_with_glow_4K_202607191918.jpeg',
-    dogwoman: HOB + 'Dog_looking_at_woman_petting_202607191914.jpeg',
+    dining:   '00 Visuals/02 Visuals_Projects/_Reduced/05 House on the Bluff/Dining_room_detail_shot_4K_202607191841 copy.webp',
+    living:   '00 Visuals/02 Visuals_Projects/_Reduced/05 House on the Bluff/Architectural_photograph_in_Mons…_4K_202607191719 copy.webp',
+    dogcouch: '00 Visuals/02 Visuals_Projects/_Reduced/05 House on the Bluff/Dog_lying_on_couch_4K_202607191739 copy.webp',
+    lantern:  '00 Visuals/02 Visuals_Projects/_Reduced/05 House on the Bluff/Noguchi_lantern_with_glow_4K_202607191918 copy.webp',
+    dogwoman: '00 Visuals/02 Visuals_Projects/_Reduced/05 House on the Bluff/Dog_looking_at_woman_petting_202607191914 copy.webp',
   };
   const BLUFF_PAGES = [
     { type: 'hero' },
@@ -74,17 +73,17 @@
 
   const FG = '00 Visuals/02 Visuals_Projects/03 Fort Greene/';
   const FG_IMG = {
-    plant:        FG + 'Woman_tending_to_plant_4K_202607261345.jpeg',
-    living:       FG + 'White_framed_windows_add_character_202607261505.jpeg',
-    fireplace:    FG + 'Fireplace_detail_and_couch_4K_202607261510 copy.jpg',
-    pendant:      FG + 'Dining_table_pendant_brass_refle…_202607261517.jpeg',
-    kitchen:      FG + 'Architectural_shot_of_kitchen_4K_202607261530.jpeg',
-    bedroom:      FG + 'Change_fireplace_tile_surround_4K_202607261525.jpeg',
-    faucet:       FG + 'Reduce_faucet_length_a_little_202607261401.jpeg',
-    powder:       FG + 'Architectural_photograph_Brookly…_4K_202607261357.jpeg',
-    hallway:      FG + 'Architectural_photograph_Brookly…_4K_202607261412.jpeg',
-    vanity:       FG + 'Local_project_norm_architect_style_202607261447.jpeg',
-    vanityDetail: FG + 'Oak_cabinet_countertop_fixture_d…_202607261455.jpeg',
+    plant:        '00 Visuals/02 Visuals_Projects/_Reduced/03 Fort Green/Woman_tending_to_plant_4K_202607261345 copy.webp',
+    living:       '00 Visuals/02 Visuals_Projects/_Reduced/03 Fort Green/White_framed_windows_add_character_202607261505 copy.webp',
+    fireplace:    '00 Visuals/02 Visuals_Projects/_Reduced/03 Fort Green/Fireplace_detail_and_couch_4K_202607261510 copy 2.webp',
+    pendant:      '00 Visuals/02 Visuals_Projects/_Reduced/03 Fort Green/Dining_table_pendant_brass_refle…_202607261517 copy.webp',
+    kitchen:      '00 Visuals/02 Visuals_Projects/_Reduced/03 Fort Green/Architectural_shot_of_kitchen_4K_202607261530 copy.webp',
+    bedroom:      '00 Visuals/02 Visuals_Projects/_Reduced/03 Fort Green/Change_fireplace_tile_surround_4K_202607261525 copy.webp',
+    faucet:       '00 Visuals/02 Visuals_Projects/_Reduced/03 Fort Green/Reduce_faucet_length_a_little_202607261401 copy.webp',
+    powder:       '00 Visuals/02 Visuals_Projects/_Reduced/03 Fort Green/Architectural_photograph_Brookly…_4K_202607261357 copy.webp',
+    hallway:      '00 Visuals/02 Visuals_Projects/_Reduced/03 Fort Green/Architectural_photograph_Brookly…_4K_202607261412 copy.webp',
+    vanity:       '00 Visuals/02 Visuals_Projects/_Reduced/03 Fort Green/Local_project_norm_architect_style_202607261447 copy.webp',
+    vanityDetail: '00 Visuals/02 Visuals_Projects/_Reduced/03 Fort Green/Oak_cabinet_countertop_fixture_d…_202607261455 copy.webp',
   };
   const FORT_GREENE_PAGES = [
     { type: 'hero' },
@@ -99,16 +98,16 @@
 
   const FP = '00 Visuals/02 Visuals_Projects/06 Findlay Park/';
   const FP_IMG = {
-    scooter:   FP + 'kid scooter.jpg',
-    welcome:   FP + 'Update_cladding_panel_per_reference_202607261642 v2.jpg',
-    couple:    FP + 'Couple_sitting_on_bench_4K_202607261744.jpeg',
-    flowers:   FP + 'Wildflowers_with_out_of_focus_202607261736.jpeg',
-    lake:      FP + 'Architectural_photograph_Cincinn…_4K_202607261751.jpeg',
-    yoga:      FP + 'Zoom_further_detail_telephoto_shot_202607261827.jpeg',
-    morning:   FP + 'Architecture_pavilion_early_morn…_4K_202607261815.jpeg',
-    concert:   FP + 'Night_event_photography_classica…_4K_202607261837.jpeg',
-    cello:     FP + 'Cello Player.jpg',
-    kidteddy:  FP + 'Kid_enjoying_concert_holding_ted…_202607261846.jpeg',
+    scooter:   '00 Visuals/02 Visuals_Projects/_Reduced/06 Findlay Park/kid scooter copy.webp',
+    welcome:   '00 Visuals/02 Visuals_Projects/_Reduced/06 Findlay Park/Update_cladding_panel_per_reference_202607261642 v2 copy.webp',
+    couple:    '00 Visuals/02 Visuals_Projects/_Reduced/06 Findlay Park/Couple_sitting_on_bench_4K_202607261744 copy.webp',
+    flowers:   '00 Visuals/02 Visuals_Projects/_Reduced/06 Findlay Park/Wildflowers_with_out_of_focus_202607261736 copy.webp',
+    lake:      '00 Visuals/02 Visuals_Projects/_Reduced/06 Findlay Park/Architectural_photograph_Cincinn…_4K_202607261751 copy.webp',
+    yoga:      '00 Visuals/02 Visuals_Projects/_Reduced/06 Findlay Park/Zoom_further_detail_telephoto_shot_202607261827 copy.webp',
+    morning:   '00 Visuals/02 Visuals_Projects/_Reduced/06 Findlay Park/Architecture_pavilion_early_morn…_4K_202607261815 copy.webp',
+    concert:   '00 Visuals/02 Visuals_Projects/_Reduced/06 Findlay Park/Night_event_photography_classica…_4K_202607261837 copy.webp',
+    cello:     '00 Visuals/02 Visuals_Projects/_Reduced/06 Findlay Park/Cello Player copy.webp',
+    kidteddy:  '00 Visuals/02 Visuals_Projects/_Reduced/06 Findlay Park/Kid_enjoying_concert_holding_ted…_202607261846 copy.webp',
   };
   const FINDLAY_PAGES = [
     { type: 'hero' },
@@ -122,16 +121,15 @@
 
   const FR = '00 Visuals/02 Visuals_Projects/08 Frame House/';
   const FR_IMG = {
-    car:      FR + 'Car_in_focus_building_behind_202608052056.jpeg',
-    walk:     FR + 'Person_walking_past_architecture_4K_202608090119.jpeg',
-    meadow:   FR + 'Add_more_meadowy_grass_4K_202608052039.jpeg',
-    wildflor: FR + 'Telephoto_landscape_foreground_b…_4K_202608052051.jpeg',
-    facade:   FR + 'Detail_telephoto_shot_architecture_4K_202608052112.jpeg',
-    glass:    FR + 'Building_facade_window_detail_4K_202608052109.jpeg',
-    dusk:     FR + 'Architectural_photograph_East_Ha…_4K_202608052123.jpeg',
-    dining:   FR + 'Dining_table_and_chair_shot_202608052202.jpeg',
-    living:   FR + 'Telephoto_interior_design_photog…_4K_202608052156.jpeg',
-    aerial:   FR + 'Remove_house_replace_trees_4K_202608052225.jpeg',
+    car:      '00 Visuals/02 Visuals_Projects/_Reduced/08 Frame House/Car_in_focus_building_behind_202608052056 copy.webp',
+    walk:     '00 Visuals/02 Visuals_Projects/_Reduced/08 Frame House/Person_walking_past_architecture_4K_202608090119 copy.webp',
+    meadow:   '00 Visuals/02 Visuals_Projects/_Reduced/08 Frame House/Add_more_meadowy_grass_4K_202608052039 copy.webp',
+    facade:   '00 Visuals/02 Visuals_Projects/_Reduced/08 Frame House/Detail_telephoto_shot_architecture_4K_202608052112 copy.webp',
+    glass:    '00 Visuals/02 Visuals_Projects/_Reduced/08 Frame House/Building_facade_window_detail_4K_202608052109 copy.webp',
+    dusk:     '00 Visuals/02 Visuals_Projects/_Reduced/08 Frame House/Architectural_photograph_East_Ha…_4K_202608052123 copy.webp',
+    dining:   '00 Visuals/02 Visuals_Projects/_Reduced/08 Frame House/Dining_table_and_chair_shot_202608052202 copy.webp',
+    living:   '00 Visuals/02 Visuals_Projects/_Reduced/08 Frame House/Telephoto_interior_design_photog…_4K_202608052156 copy.webp',
+    aerial:   '00 Visuals/02 Visuals_Projects/_Reduced/08 Frame House/Remove_house_replace_trees_4K_202608052225 copy.webp',
   };
   const FRAME_PAGES = [
     { type: 'hero' },
@@ -145,16 +143,16 @@
 
   const NK = '00 Visuals/02 Visuals_Projects/10 Naalukettu/';
   const NK_IMG = {
-    saree:    NK + 'Woman_in_traditional_saree_4K_version 2 updated.jpg',
-    aerial:   NK + 'Remove_white_architectural_photo…_4K_202608061811.jpeg',
-    coconut:  NK + 'Person_climbing_coconut_tree_4K_202608061906.jpeg',
-    dew:      NK + 'Dew_dripping_from_banana_leaves_202608061925.jpeg',
-    dancer:   NK + 'dacer striking pose.jpg',
-    ritual:   NK + 'Woman_performing_Hindu_ritual_4K_202608061944.jpeg',
-    courtyard:NK + 'Decrease_incense_smoke_keep_rays_202608061934.jpeg',
-    sisters:  NK + 'Sisters_playing_in_water_4K_202608062001 copy.jpg',
-    reading:  NK + 'Man_reading_newspaper_in_mundu_202608062019 copy.jpg',
-    lotus:    NK + 'Lotus_in_water_4K_202608062027.jpeg',
+    saree:    '00 Visuals/02 Visuals_Projects/_Reduced/10 Naalukettu/Woman_in_traditional_saree_4K_version 2 updated copy.webp',
+    aerial:   '00 Visuals/02 Visuals_Projects/_Reduced/10 Naalukettu/Remove_white_architectural_photo…_4K_202608061811 copy.webp',
+    coconut:  '00 Visuals/02 Visuals_Projects/_Reduced/10 Naalukettu/Person_climbing_coconut_tree_4K_202608061906 copy.webp',
+    dew:      '00 Visuals/02 Visuals_Projects/_Reduced/10 Naalukettu/Dew_dripping_from_banana_leaves_202608061925 copy.webp',
+    dancer:   '00 Visuals/02 Visuals_Projects/_Reduced/10 Naalukettu/dacer striking pose copy.webp',
+    ritual:   '00 Visuals/02 Visuals_Projects/_Reduced/10 Naalukettu/Woman_performing_Hindu_ritual_4K_202608061944 copy.webp',
+    courtyard:'00 Visuals/02 Visuals_Projects/_Reduced/10 Naalukettu/Decrease_incense_smoke_keep_rays_202608061934 copy.webp',
+    sisters:  '00 Visuals/02 Visuals_Projects/_Reduced/10 Naalukettu/Sisters_playing_in_water_4K_202608062001 copy 2.webp',
+    reading:  '00 Visuals/02 Visuals_Projects/_Reduced/10 Naalukettu/Man_reading_newspaper_in_mundu_202608062019 copy 2.webp',
+    lotus:    '00 Visuals/02 Visuals_Projects/_Reduced/10 Naalukettu/Lotus_in_water_4K_202608062027 copy.webp',
   };
   const NAALUKETTU_PAGES = [
     { type: 'hero' },
@@ -171,10 +169,10 @@
   // inset is "Cowboy_riding_horse_on_ranch".
   const SF = '00 Visuals/02 Visuals_Projects/09 Stanfield Farm/';
   const SF_IMG = {
-    leading: SF + 'Cowboy_pulling_horse_by_house_202608062214.jpeg',
-    house:   SF + 'Update_house_geometry_in_image_202608062257.jpeg',
-    barn:    SF + 'Remove_horse_on_right_4K_202608062231.jpeg',
-    rearing: SF + 'Cowboy_riding_horse_on_ranch_202608062225.jpeg',
+    leading: '00 Visuals/02 Visuals_Projects/_Reduced/09 Stanfield Farm/Cowboy_pulling_horse_by_house_202608062214 copy.webp',
+    house:   '00 Visuals/02 Visuals_Projects/_Reduced/09 Stanfield Farm/Update_house_geometry_in_image_202608062257 copy.webp',
+    barn:    '00 Visuals/02 Visuals_Projects/_Reduced/09 Stanfield Farm/Remove_horse_on_right_4K_202608062231 copy.webp',
+    rearing: '00 Visuals/02 Visuals_Projects/_Reduced/09 Stanfield Farm/Cowboy_riding_horse_on_ranch_202608062225 copy.webp',
   };
   const STANFIELD_PAGES = [
     { type: 'hero' },
@@ -184,14 +182,14 @@
 
   const MH = '00 Visuals/02 Visuals_Projects/11 Millerton House/';
   const MH_IMG = {
-    pool:   MH + 'Woman_in_water_looking_view_202608081635.jpeg',
-    vista:  MH + 'Architectural_photograph_of_mode…_4K_202608081648.jpeg',
-    trees:  MH + 'House_viewed_through_trees_4K_202608081750.jpeg',
-    door:   MH + 'Woman_walking_out_door_4K_202608081736.jpeg',
-    chip:   MH + 'Wildlife_near_architecture_4K_202608081709.jpeg',
-    deer:   MH + 'Deer_standing_by_metal_siding_202608081701.jpeg',
-    snow:   MH + 'Daughter_placing_hat_on_snowman_202608081721.jpeg',
-    autumn: MH + 'Architectural_photograph_of_resi…_4K_202608081701.jpeg',
+    pool:   '00 Visuals/02 Visuals_Projects/_Reduced/11 Millerton House/Woman_in_water_looking_view_202608081635 copy.webp',
+    vista:  '00 Visuals/02 Visuals_Projects/_Reduced/11 Millerton House/Architectural_photograph_of_mode…_4K_202608081648 copy.webp',
+    trees:  '00 Visuals/02 Visuals_Projects/_Reduced/11 Millerton House/House_viewed_through_trees_4K_202608081750 copy.webp',
+    door:   '00 Visuals/02 Visuals_Projects/_Reduced/11 Millerton House/Woman_walking_out_door_4K_202608081736 copy.webp',
+    chip:   '00 Visuals/02 Visuals_Projects/_Reduced/11 Millerton House/Wildlife_near_architecture_4K_202608081709 copy.webp',
+    deer:   '00 Visuals/02 Visuals_Projects/_Reduced/11 Millerton House/Deer_standing_by_metal_siding_202608081701 copy.webp',
+    snow:   '00 Visuals/02 Visuals_Projects/_Reduced/11 Millerton House/Daughter_placing_hat_on_snowman_202608081721 copy.webp',
+    autumn: '00 Visuals/02 Visuals_Projects/_Reduced/11 Millerton House/Architectural_photograph_of_resi…_4K_202608081701 copy.webp',
   };
   // Focal points hold each subject in frame as the panels crop tighter on
   // wider screens (portrait sources, doorway right-of-centre, chipmunk and
@@ -211,19 +209,19 @@
   // downward where the subject sits low so it isn't clipped at 16:9.
   const HF = '00 Visuals/02 Visuals_Projects/02 Heard Falkenstern/';
   const HF_IMG = {
-    painter:  HF + 'Woman_painter_looking_outside_wi…_202608052330.jpeg',
-    fixture:  HF + 'Ceiling_fixture_with_glow_4K_202608060006.jpeg',
-    console:  HF + 'Architectural_digest_local_proje…_4K_202608081845.jpeg',
-    living:   HF + 'Architectural_photograph_in_Port…_4K_202607202215.jpeg',
-    coffee:   HF + 'Coffee_table_and_couch_decor_202607202214.jpeg',
-    chairDet: HF + 'Macro_shot_of_lounge_chair_202608082014.jpeg',
-    cat:      HF + 'Chair_and_cat_lying_4K_202607202105.jpeg',
-    woven:    HF + 'Chair_material_and_carpet_texture_202608081926.jpeg',
-    kitchen:  HF + 'Kitchen_island_with_green_tile_202608052344.jpeg',
-    plant:    HF + 'Focusing_on_plant_4K_202608081905.jpeg',
-    counter:  HF + 'Architectural_design_highlightin…_4K_202608081859.jpeg',
-    powder:   HF + 'Replace_flowers_with_avant_garde…_202608081930.jpeg',
-    blue:     HF + 'Blue_stand_on_red_flooring_202608081945.jpeg',
+    painter:  '00 Visuals/02 Visuals_Projects/_Reduced/02 Heard Falkenstern/Woman_painter_looking_outside_wi…_202608052330 copy.webp',
+    fixture:  '00 Visuals/02 Visuals_Projects/_Reduced/02 Heard Falkenstern/Ceiling_fixture_with_glow_4K_202608060006 copy.webp',
+    console:  '00 Visuals/02 Visuals_Projects/_Reduced/02 Heard Falkenstern/Architectural_digest_local_proje…_4K_202608081845 copy.webp',
+    living:   '00 Visuals/02 Visuals_Projects/_Reduced/02 Heard Falkenstern/Architectural_photograph_in_Port…_4K_202607202215 copy.webp',
+    coffee:   '00 Visuals/02 Visuals_Projects/_Reduced/02 Heard Falkenstern/Coffee_table_and_couch_decor_202607202214 copy.webp',
+    chairDet: '00 Visuals/02 Visuals_Projects/_Reduced/02 Heard Falkenstern/Macro_shot_of_lounge_chair_202608082014 copy.webp',
+    cat:      '00 Visuals/02 Visuals_Projects/_Reduced/02 Heard Falkenstern/Chair_and_cat_lying_4K_202607202105 copy.webp',
+    woven:    '00 Visuals/02 Visuals_Projects/_Reduced/02 Heard Falkenstern/Chair_material_and_carpet_texture_202608081926 copy.webp',
+    kitchen:  '00 Visuals/02 Visuals_Projects/_Reduced/02 Heard Falkenstern/Kitchen_island_with_green_tile_202608052344 copy.webp',
+    plant:    '00 Visuals/02 Visuals_Projects/_Reduced/02 Heard Falkenstern/Focusing_on_plant_4K_202608081905 copy.webp',
+    counter:  '00 Visuals/02 Visuals_Projects/_Reduced/02 Heard Falkenstern/Architectural_design_highlightin…_4K_202608081859 copy.webp',
+    powder:   '00 Visuals/02 Visuals_Projects/_Reduced/02 Heard Falkenstern/Replace_flowers_with_avant_garde…_202608081930 copy.webp',
+    blue:     '00 Visuals/02 Visuals_Projects/_Reduced/02 Heard Falkenstern/Blue_stand_on_red_flooring_202608081945 copy.webp',
   };
   const HEARD_PAGES = [
     { type: 'hero' },
@@ -239,6 +237,21 @@
   // Title = project name, sub-heading = location. Visuals are reused
   // from the five placeholder sets until each project gets its own;
   // projects with an explicit `pages` array drive a bespoke sequence.
+
+  // Page-0 concept copy, keyed by project name.
+  const CONCEPTS = {
+    'Heard Falkenstern': 'Heard Falkenstern is an apartment interior design project that explores a refined balance between materiality, comfort, and contemporary living. The design creates a calm, cohesive atmosphere through carefully considered proportions, natural textures, and a restrained material palette. Each space is thoughtfully composed to enhance everyday living, while subtle details, warm tones, and controlled lighting add depth, character, and a sense of timeless elegance.',
+    'Fort Greene Townhouse': 'The Fort Greene Townhouse renovation balances historic character with contemporary refinement. The design enhances natural light, openness, and functionality while preserving original architectural details. The visualization captures the interplay of light, materials, and color, showcasing how modern interventions complement the traditional structure. The project celebrates a thoughtful dialogue between heritage, transformation, and contemporary living.',
+    'Pearl Museum': 'The Pearl Museum is an exhibition space in Abu Dhabi, shaped by geometric volumes, reflective surfaces, and water. Pearl-finished interiors create a luminous, immersive atmosphere, while water introduces shifting caustics, reflections, and movement. The visual narrative celebrates cultural diversity, bringing varied identities together within a shared spatial experience, where light, water, and architecture continuously interact.',
+    'Findlay': 'Findlay’s Civic Park is a resilient public landscape that integrates flood mitigation with community life along the Blanchard River. Flexible pavilions and an adaptable amphitheater support diverse activities, while the visual narrative captures changing patterns of use throughout the day. Together, the architecture and landscape strengthen the connection between people, the river, and the public realm.',
+    'Gallatin Grange': 'Designed as a companion to the Gallatin House, Gallatin Barn responds to the natural hillside with guest spaces, an open breezeway, and integrated support functions. The visualization captures the architecture through carefully composed views, emphasizing the warm tones of Corten steel against the surrounding mountain landscape while expressing the project’s materiality, setting, and spatial character.',
+    'Frame House': 'Frame House is defined by a modular steel structure, carefully placed walls, and expansive glazing that connect the interior with the coastal landscape. The visualization explores the home from its bay setting through architectural details, material expression, and intimate interior views. The narrative concludes with an aerial perspective, revealing the seamless relationship between the house, terrain, and surrounding beach.',
+    'House on the Bluff': 'Set along the coastal landscape of Portugal, this residence explores a quiet dialogue between architecture, material, and everyday life. Warm timber, natural textures, and soft daylight create an intimate interior atmosphere. The visualization focuses on carefully framed details and lived-in moments, using subtle lighting and warm tones to reveal the character, tactility, and calm rhythm of the home.',
+    'Millerton House': 'Millerton House is set within the wooded landscape of the Catskills, New York, overlooking rolling mountains. Dark timber cladding and a standing-seam metal roof create a strong, understated presence, balanced by warm timber interiors and expansive glazing. The exterior pool extends the living experience into the landscape. The visualization emphasizes atmosphere, materiality, natural light, and the home’s quiet relationship with its surroundings.',
+    'Naalukettu': 'Nalukettu is a contemporary interpretation of Kerala’s vernacular architecture, set beside a lush paddy field. Centered around an internal courtyard, the residence embraces natural light, ventilation, airflow, and rain. Laterite brick, walnut wood, clay tiles, white plaster, Athangudi tiles, and charcoal granite define its material palette. Three bedrooms and a dance studio complete a home rooted in tradition and everyday life. The visual narrative celebrates Kerala’s traditions and community, portraying the architecture as a living environment shaped by everyday rituals, cultural practices, and the passage of time.',
+    'Stanfield Farm': 'Horse Farm reimagines a landscape depleted by 150 years of monoculture farming, restoring native ecology through a carefully structured masterplan. The first phase introduces a main residence composed of four distinct volumes beneath one roof. Separated to invite landscape inward, the architecture establishes a fluid dialogue between nature, space, and daily life. The visualization emphasizes the building’s exterior, capturing its materiality, architectural details, and expansive relationship with the surrounding landscape.',
+  };
+
   const PROJECTS = [
     { name: 'Heard Falkenstern',     location: 'Portland, Oregon',                image: HF_IMG.painter, imagePos: '55% 55%', pages: HEARD_PAGES },
     { name: 'Fort Greene Townhouse', location: 'Brooklyn, New York',              image: FG_IMG.plant, pages: FORT_GREENE_PAGES },
@@ -266,6 +279,7 @@
   const revealEl = document.getElementById('project-reveal');
   const sections = Array.prototype.slice.call(
     document.querySelectorAll('#project-copy section'));
+  const conceptEl = document.getElementById('concept-text');
   const brandEl = document.getElementById('brand');
   const splitEl = document.getElementById('split');
   const stripLeft = document.getElementById('ppages-left');
@@ -727,6 +741,7 @@
 
     // Build this project's page sequence (bespoke, or the default three).
     const project = PROJECTS[scroller.wrap(scroller.pos)];
+    conceptEl.textContent = CONCEPTS[project.name] || '';
     buildProjectPages(project.pages || defaultPages(project));
 
     resetStrips();
@@ -762,18 +777,24 @@
     }, EXPAND_MS + 60);
   }
 
+  const CONCEPT_FADE = 600;   // let the concept fade fully before unwinding
+
   function closeProject() {
     if (!projectOpen || !heroDocked) return;
-
-    // From a later page, glide back to page 0 first, then unwind.
-    const delay = page > 0 ? PUSH_MS + 100 : 0;
-    if (page > 0) goToPage(0);
     heroDocked = false;
-    setTimeout(unwindProject, delay);
+
+    // From a later page, glide back to page 0 first. Then fade the concept
+    // block out on its own, and only after that transition to the carousel.
+    const startFade = function () {
+      hideSections();
+      setTimeout(unwindProject, CONCEPT_FADE);
+    };
+    if (page > 0) setTimeout(startFade, PUSH_MS + 100);
+    else startFade();
+    if (page > 0) goToPage(0);
   }
 
   function unwindProject() {
-    hideSections();
     revealEl.classList.remove('is-open');
 
     // Hand the hero back to the carousel at its expanded geometry,
@@ -1102,19 +1123,19 @@
   // images from that same project — never a cross-project pairing.
   // Re-randomised every time the landing shows.
   const LANDING_ROOT =
-    '00 Visuals/01 Visuals_Stasis/Landing Page Visuals/';
+    '00 Visuals/02 Visuals_Projects/_Reduced/_Landing Page/';
   const LANDING_SETS = [
     [
-      '00 Everglades/Foliage_foreground_with_blurred_…_202608090017.jpeg',
-      '00 Everglades/Woman_touching_rammed_earth_wall_202608082358.jpeg',
+      '00 Everglades/Foliage_foreground_with_blurred_…_202608090017.webp',
+      '00 Everglades/Woman_touching_rammed_earth_wall_202608082358.webp',
     ],
     [
-      '01 Gallatin Grange/Petzval Lens Camera.jpg',
-      '01 Gallatin Grange/Woman_looking_into_sunset_2K_202607101748.jpeg',
+      '01 Gallatin Grange/Petzval Lens Camera.webp',
+      '01 Gallatin Grange/Woman_looking_into_sunset_2K_202607101748.webp',
     ],
     [
-      '02 Waterstone/Aspen_leaves_with_blurred_archit…_202608090026.jpeg',
-      '02 Waterstone/House_viewed_through_aspen_trees_202608090044.jpeg',
+      '02 Waterstone/Aspen_leaves_with_blurred_archit…_202608090026.webp',
+      '02 Waterstone/House_viewed_through_aspen_trees_202608090044.webp',
     ],
   ];
 

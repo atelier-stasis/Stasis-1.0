@@ -194,13 +194,15 @@
     snow:   MH + 'Daughter_placing_hat_on_snowman_202608081721.jpeg',
     autumn: MH + 'Architectural_photograph_of_resi…_4K_202608081701.jpeg',
   };
+  // Focal points hold each subject in frame as the panels crop tighter on
+  // wider screens (portrait sources, doorway right-of-centre, chipmunk and
+  // snowman low in the frame).
   const MILLERTON_PAGES = [
     { type: 'hero' },
     { type: 'full',        image: MH_IMG.vista },
-    // The doorway sits right-of-centre, so hold the crop there.
-    { type: 'inset-bleed', inset: MH_IMG.trees, right: MH_IMG.door, bleedPos: '68% center' },
-    { type: 'bleed-inset', left: MH_IMG.chip,   inset: MH_IMG.deer },
-    { type: 'bleed-quote', left: MH_IMG.snow },
+    { type: 'inset-bleed', inset: MH_IMG.trees, right: MH_IMG.door, bleedPos: '68% 55%' },
+    { type: 'bleed-inset', left: MH_IMG.chip,   inset: MH_IMG.deer,  bleedPos: '55% 66%' },
+    { type: 'bleed-quote', left: MH_IMG.snow,   bleedPos: '45% 62%' },
     { type: 'full',        image: MH_IMG.autumn },
   ];
 
@@ -215,7 +217,7 @@
     { name: 'Gallatin Grange',       location: 'Columbia County, New York',       image: GG_IMG.hero, pages: GALLATIN_PAGES },
     { name: 'Frame House',           location: 'East Hampton, New York',          image: FR_IMG.beach, pages: FRAME_PAGES },
     { name: 'House on the Bluff',    location: 'Monsaraz, Portugal',              image: HOB_IMG.man, pages: BLUFF_PAGES },
-    { name: 'Millerton House',       location: 'Catskills, New York',             image: MH_IMG.pool, pages: MILLERTON_PAGES },
+    { name: 'Millerton House',       location: 'Catskills, New York',             image: MH_IMG.pool, imagePos: '50% 55%', pages: MILLERTON_PAGES },
     { name: 'Naalukettu',            location: 'Kerala, India',                   image: NK_IMG.saree, pages: NAALUKETTU_PAGES },
     { name: 'Stanfield Farm',        location: 'Cincinnati, Ohio',                image: SF_IMG.leading, pages: STANFIELD_PAGES },
   ];

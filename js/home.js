@@ -1030,6 +1030,7 @@
       goToPage(p);
     }
     render(scroller.pos);
+    centreWord();               // letters rescale with the viewport
     if (projectOpen) updateLogoTheme();
   }
   window.addEventListener('resize', handleViewportChange);
@@ -1155,6 +1156,7 @@
   let landingReady = false;    // entrance finished, waiting for a scroll
   let dismissed = false;
   let trackGap = null;         // { from, to } gap in px, set once sliced
+  let wordShift = null;        // centring offset, as a fraction of glyph height
   let landingSession = 0;      // invalidates stale timeouts on re-show
 
     // Slice the white logo PNG into its individual letters (by scanning
@@ -1249,6 +1251,18 @@
           const from = natural * scale;         // as designed
           trackGap = { from: from, to: from * 3 };  // breathes to ~3x
           wordEl.style.gap = from.toFixed(2) + 'px';
+
+          // How far the wordmark must slide to sit on its middle letter
+          // gap rather than on its total width — kept as a fraction of
+          // the glyph height so it survives a resize. See centreWord().
+          const ctr = (segs.length - 1) / 2;
+          let bias = 0;
+          segs.forEach(function (seg, i) {
+            if (i === ctr) return;             // odd count: middle glyph
+            bias += (i < ctr ? -1 : 1) * (seg[1] - seg[0]);
+          });
+          wordShift = bias / (2 * glyphH);
+          centreWord();
         } catch (err) {
           wordEl.textContent = 'Stasis';        // graceful fallback
         }
@@ -1273,6 +1287,22 @@
     }
   }
 
+  /* Sit the wordmark on the gap between its two middle letters rather
+     than on its total width. STASIS is asymmetric — the I is about half
+     the width of every other glyph — so centring by width lands the A|S
+     gap to the right of the split. The letter gaps cancel out of the
+     offset, so it holds at every tracking width the breathing animation
+     passes through; re-applying it per show keeps it true across a
+     viewport resize, which rescales the letters. */
+  function centreWord() {
+    if (wordShift === null) return;
+    // On mobile the two halves stack, so the seam runs horizontally and
+    // there is no vertical line to sit on — centre by width instead.
+    const h = wordEl.getBoundingClientRect().height;
+    const dx = isMobile ? 0 : wordShift * h;
+    wordEl.style.transform = 'translateX(' + dx.toFixed(2) + 'px)';
+  }
+
   /* Show (or re-show) the landing page: fresh image pair, halves push
      in from opposite directions, wordmark breathes, chevron invites
      the dismissing scroll. */
@@ -1289,6 +1319,7 @@
     loaderEl.classList.remove('is-exiting');       // white backdrop restored
     loaderEl.style.pointerEvents = '';
     spreadLetters(0);                              // back to natural tracking
+    centreWord();                                  // re-true after any resize
 
     const set =
       LANDING_SETS[Math.floor(Math.random() * LANDING_SETS.length)];

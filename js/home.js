@@ -41,7 +41,7 @@
   const PM_IMG = {
     family: PM + 'Emirati_kid_dropping_pearls_water_202607191139.jpeg',
     ballet: PM + 'Human_figure_ballet_pose_yellow_202607191210.jpeg',
-    couple: PM + 'Arab_couple_enjoying_architecture_4K_202607191157.jpeg',
+    couple: PM + 'Arab_couple_enjoying_architecture_4K_202608051820.jpeg',
     aqua:   PM + 'Aqua_water_with_pearls_4K_202607191146.jpeg',
   };
   const PEARL_PAGES = [
@@ -123,8 +123,7 @@
   const FR = '00 Visuals/02 Visuals_Projects/08 Frame House/';
   const FR_IMG = {
     car:      FR + 'Car_in_focus_building_behind_202608052056.jpeg',
-    sail:     FR + 'Woman_sailor_African_American_4K_202608052321.jpeg',
-    beach:    FR + 'Person_on_beach_with_architecture_202608081602.jpeg',
+    walk:     FR + 'Person_walking_past_architecture_4K_202608090119.jpeg',
     meadow:   FR + 'Add_more_meadowy_grass_4K_202608052039.jpeg',
     wildflor: FR + 'Telephoto_landscape_foreground_b…_4K_202608052051.jpeg',
     facade:   FR + 'Detail_telephoto_shot_architecture_4K_202608052112.jpeg',
@@ -146,7 +145,7 @@
 
   const NK = '00 Visuals/02 Visuals_Projects/10 Naalukettu/';
   const NK_IMG = {
-    saree:    NK + 'Woman_in_traditional_saree_4K_202608061712.jpeg',
+    saree:    NK + 'Woman_in_traditional_saree_4K_version 2 updated.jpg',
     aerial:   NK + 'Remove_white_architectural_photo…_4K_202608061811.jpeg',
     coconut:  NK + 'Person_climbing_coconut_tree_4K_202608061906.jpeg',
     dew:      NK + 'Dew_dripping_from_banana_leaves_202608061925.jpeg',
@@ -246,7 +245,7 @@
     { name: 'Pearl Museum',          location: 'Abu Dhabi, United Arab Emirates', image: PM_IMG.family, pages: PEARL_PAGES },
     { name: 'Findlay',               location: 'Cincinnati, Ohio',                image: FP_IMG.scooter, pages: FINDLAY_PAGES },
     { name: 'Gallatin Grange',       location: 'Columbia County, New York',       image: GG_IMG.hero, pages: GALLATIN_PAGES },
-    { name: 'Frame House',           location: 'East Hampton, New York',          image: FR_IMG.beach, pages: FRAME_PAGES },
+    { name: 'Frame House',           location: 'East Hampton, New York',          image: FR_IMG.walk, pages: FRAME_PAGES },
     { name: 'House on the Bluff',    location: 'Monsaraz, Portugal',              image: HOB_IMG.man, pages: BLUFF_PAGES },
     { name: 'Millerton House',       location: 'Catskills, New York',             image: MH_IMG.pool, imagePos: '50% 55%', pages: MILLERTON_PAGES },
     { name: 'Naalukettu',            location: 'Kerala, India',                   image: NK_IMG.saree, pages: NAALUKETTU_PAGES },

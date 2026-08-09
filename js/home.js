@@ -1106,19 +1106,16 @@
     '00 Visuals/01 Visuals_Stasis/Landing Page Visuals/';
   const LANDING_SETS = [
     [
-      '00 FBO/Architecture_peeking_through_asp…_2K_202607101747.jpeg',
-      '00 FBO/Landscape_in_focus_woodlands_blu…_202607101747.jpeg',
+      '00 Everglades/Foliage_foreground_with_blurred_…_202608090017.jpeg',
+      '00 Everglades/Woman_touching_rammed_earth_wall_202608082358.jpeg',
     ],
     [
-      '01 Gallatin Grange/Porsche_and_building_in_frame_202607101748.jpeg',
-      '01 Gallatin Grange/Porsche_car_with_badge_water_202607101749.jpeg',
+      '01 Gallatin Grange/Petzval Lens Camera.jpg',
       '01 Gallatin Grange/Woman_looking_into_sunset_2K_202607101748.jpeg',
-      '01 Gallatin Grange/Woods_view_through_tree_trunks_202607101748.jpeg',
     ],
     [
-      '02 Iceland Sauna Competition/Arctic_fox_in_winter_sunlight_202607101750 (1).jpeg',
-      '02 Iceland Sauna Competition/Arctic_fox_in_winter_sunlight_202607101750.jpeg',
-      '02 Iceland Sauna Competition/Terrain_and_gabion_sauna_2K_202607101750.jpeg',
+      '02 Waterstone/Aspen_leaves_with_blurred_archit…_202608090026.jpeg',
+      '02 Waterstone/House_viewed_through_aspen_trees_202608090044.jpeg',
     ],
   ];
 

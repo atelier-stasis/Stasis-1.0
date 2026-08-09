@@ -739,10 +739,14 @@
     hideTag();
     clearActiveCues();
 
-    // Build this project's page sequence (bespoke, or the default three).
+    // Resolve this project's page sequence (bespoke, or the default three)
+    // now, but defer building its DOM — and the image loads/decodes that
+    // come with it — until the expand animation has finished, so those
+    // don't drop frames mid-transition.
     const project = PROJECTS[scroller.wrap(scroller.pos)];
     conceptEl.textContent = CONCEPTS[project.name] || '';
-    buildProjectPages(project.pages || defaultPages(project));
+    const pages = project.pages || defaultPages(project);
+    currentPages = pages;
 
     resetStrips();
     splitEl.classList.add('is-project-open');
@@ -765,6 +769,7 @@
     });
 
     setTimeout(function () {
+      buildProjectPages(pages);
       // Dock the hero inside the right strip so it rides the page pushes.
       slot.style.transition = 'none';
       slot.style.width = '100%';
@@ -1032,8 +1037,15 @@
     MOBILE_MQ.addEventListener('change', handleViewportChange);
   }
 
-  // Preload every thumbnail so wrapped slots never flash empty.
-  for (const p of PROJECTS) { new Image().src = p.image; }
+  // Preload AND pre-decode every thumbnail so wrapped slots never flash
+  // empty and a mid-scroll src swap never decodes on the animation frame.
+  const warmed = [];   // hold refs so the decoded bitmaps stay cached
+  for (const p of PROJECTS) {
+    const im = new Image();
+    im.src = p.image;
+    if (im.decode) im.decode().catch(function () {});
+    warmed.push(im);
+  }
 
   // The carousel opens on this project (found by name so it survives
   // any reordering of PROJECTS).

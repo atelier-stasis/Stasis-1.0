@@ -183,6 +183,27 @@
     { type: 'bleed-inset', left: SF_IMG.barn, inset: SF_IMG.rearing },
   ];
 
+  const MH = '00 Visuals/02 Visuals_Projects/11 Millerton House/';
+  const MH_IMG = {
+    pool:   MH + 'Woman_in_water_looking_view_202608081635.jpeg',
+    vista:  MH + 'Architectural_photograph_of_mode…_4K_202608081648.jpeg',
+    trees:  MH + 'House_viewed_through_trees_4K_202608081750.jpeg',
+    door:   MH + 'Woman_walking_out_door_4K_202608081736.jpeg',
+    chip:   MH + 'Wildlife_near_architecture_4K_202608081709.jpeg',
+    deer:   MH + 'Deer_standing_by_metal_siding_202608081701.jpeg',
+    snow:   MH + 'Daughter_placing_hat_on_snowman_202608081721.jpeg',
+    autumn: MH + 'Architectural_photograph_of_resi…_4K_202608081701.jpeg',
+  };
+  const MILLERTON_PAGES = [
+    { type: 'hero' },
+    { type: 'full',        image: MH_IMG.vista },
+    // The doorway sits right-of-centre, so hold the crop there.
+    { type: 'inset-bleed', inset: MH_IMG.trees, right: MH_IMG.door, bleedPos: '68% center' },
+    { type: 'bleed-inset', left: MH_IMG.chip,   inset: MH_IMG.deer },
+    { type: 'bleed-quote', left: MH_IMG.snow },
+    { type: 'full',        image: MH_IMG.autumn },
+  ];
+
   // Title = project name, sub-heading = location. Visuals are reused
   // from the five placeholder sets until each project gets its own;
   // projects with an explicit `pages` array drive a bespoke sequence.
@@ -194,7 +215,7 @@
     { name: 'Gallatin Grange',       location: 'Columbia County, New York',       image: GG_IMG.hero, pages: GALLATIN_PAGES },
     { name: 'Frame House',           location: 'East Hampton, New York',          image: FR_IMG.beach, pages: FRAME_PAGES },
     { name: 'House on the Bluff',    location: 'Monsaraz, Portugal',              image: HOB_IMG.man, pages: BLUFF_PAGES },
-    { name: 'Millerton House',       location: 'Catskills, New York',             image: '00 Visuals/project-01/01.jpg' },
+    { name: 'Millerton House',       location: 'Catskills, New York',             image: MH_IMG.pool, pages: MILLERTON_PAGES },
     { name: 'Naalukettu',            location: 'Kerala, India',                   image: NK_IMG.saree, pages: NAALUKETTU_PAGES },
     { name: 'Stanfield Farm',        location: 'Cincinnati, Ohio',                image: SF_IMG.leading, pages: STANFIELD_PAGES },
   ];
@@ -357,6 +378,7 @@
       if (thumb.project !== mod(k, N)) {
         thumb.project = mod(k, N);
         thumb.img.src = project.image;
+        thumb.img.style.objectPosition = project.imagePos || '';
       }
       const ty = -(k - pos) * M.thumbSpacing;
       const ts = 1 - (1 - THUMB_SCALE) * t;
@@ -442,11 +464,15 @@
 
   /* ---------- page DOM builders ---------- */
 
-  function makeImg(cls, src) {
+  // `pos` is an optional CSS object-position (e.g. '72% center') that sets
+  // the crop's focal point so it matches the layout; the image reveals
+  // more only when the panel's aspect changes on resize.
+  function makeImg(cls, src, pos) {
     const img = document.createElement('img');
     img.className = cls;
     img.alt = '';
     img.decoding = 'async';    // decode off the main thread — no push jank
+    if (pos) img.style.objectPosition = pos;
     img.src = encodeURI(src);
     return img;
   }
@@ -505,7 +531,7 @@
         pageSlot[k] = Math.max(0, slot - 1);
         const el = pg.type === 'video-full'
           ? makeVideoEl(pg.video)
-          : makeImg('project-media__el is-hidden', pg.image);
+          : makeImg('project-media__el is-hidden', pg.image, pg.pos);
         mediaOverlay.appendChild(el);
         overlayMedia[k] = el;
         continue;
@@ -529,20 +555,20 @@
       // and the white half on top (left), per the single-column layout.
       let imageEl = null, whiteEl = null, deskImageLeft = false;
       if (pg.type === 'bleed-inset') {
-        imageEl = makeImg('ppage__bleed', pg.left);
-        whiteEl = makeImg('ppage__inset', pg.inset);
+        imageEl = makeImg('ppage__bleed', pg.left, pg.bleedPos);
+        whiteEl = makeImg('ppage__inset', pg.inset, pg.insetPos);
         deskImageLeft = true;
       } else if (pg.type === 'bleed-quote') {
-        imageEl = makeImg('ppage__bleed', pg.left);
+        imageEl = makeImg('ppage__bleed', pg.left, pg.bleedPos);
         whiteEl = makeQuote();
         deskImageLeft = true;
       } else if (pg.type === 'quote-bleed') {
-        imageEl = makeImg('ppage__bleed', pg.right);
+        imageEl = makeImg('ppage__bleed', pg.right, pg.bleedPos);
         whiteEl = makeQuote();
         deskImageLeft = false;
       } else if (pg.type === 'inset-bleed') {
-        imageEl = makeImg('ppage__bleed', pg.right);
-        whiteEl = makeImg('ppage__inset', pg.inset);
+        imageEl = makeImg('ppage__bleed', pg.right, pg.bleedPos);
+        whiteEl = makeImg('ppage__inset', pg.inset, pg.insetPos);
         deskImageLeft = false;
       }
 

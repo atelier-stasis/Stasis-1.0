@@ -1146,7 +1146,7 @@
       '01 Gallatin Grange/Woman_looking_into_sunset_2K_202607101748.webp',
     ],
     [
-      '02 Waterstone/Aspen_leaves_with_blurred_archit…_202608090026.webp',
+      '02 Waterstone/Aspen_leaves_and_architecture_4K_202608091148 copy.webp',
       '02 Waterstone/House_viewed_through_aspen_trees_202608090044.webp',
     ],
   ];

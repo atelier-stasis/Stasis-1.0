@@ -1,0 +1,6 @@
+# Showreel working files stay local: the Premiere project, its source
+# clips, and the alternate exports. Only the reel the site actually
+# serves is tracked, so the repo never carries the 89MB 1080p first cut
+# or a superseded export.
+00 Visuals/02 Visuals_Projects/_Reduced/00 Showreel/*
+!00 Visuals/02 Visuals_Projects/_Reduced/00 Showreel/Showreel 1080p.mp4

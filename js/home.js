@@ -1003,7 +1003,7 @@
   const showreelSound = document.getElementById('showreel-sound');
 
   const SHOWREEL_SRC =
-    '00 Visuals/02 Visuals_Projects/_Reduced/00 Showreel/Showreel 720p.mp4';
+    '00 Visuals/02 Visuals_Projects/_Reduced/00 Showreel/Showreel 1080p.mp4';
 
   function subpageOpen() {
     return aboutEl.classList.contains('is-open') ||

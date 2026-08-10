@@ -694,13 +694,14 @@ img, canvas {
   pointer-events: auto;
 }
 
-/* `contain`, not `cover`: the reel is a composed edit, so letterbox it
-   rather than crop the framing the edit already decided. */
+/* Fills the viewport edge to edge at any size — never letterboxed. The
+   frame is cropped rather than fitted, which is the trade for no bars. */
 .showreel__video {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center center;
   background: #151515;
 }
 

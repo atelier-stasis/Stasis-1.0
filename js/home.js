@@ -31,7 +31,9 @@
     { type: 'hero' },
     { type: 'full',        image: GG_IMG.woods },
     { type: 'bleed-inset', left: GG_IMG.facade,  inset: GG_IMG.man },
-    { type: 'bleed-quote', left: GG_IMG.porsche },
+    { type: 'bleed-quote', left: GG_IMG.porsche,
+      statement: 'Our aim was to hold true to the material, letting it ' +
+        'read as an ephemeral element rather than a finish.' },
     { type: 'full',        image: GG_IMG.sunset },
     { type: 'video-full',  video: GG_IMG.leaves },
   ];
@@ -63,9 +65,12 @@
   };
   const BLUFF_PAGES = [
     { type: 'hero' },
-    { type: 'bleed-quote', left: HOB_IMG.whiskey },
+    { type: 'bleed-quote', left: HOB_IMG.whiskey,
+      statement: 'Our details were composed to evoke a sense of touch.' },
     { type: 'full',        image: HOB_IMG.coastal },
-    { type: 'quote-bleed', right: HOB_IMG.lamp },
+    { type: 'quote-bleed', right: HOB_IMG.lamp,
+      statement: 'The intent was atmosphere before architecture through ' +
+        'texture, light, and intimacy.' },
     { type: 'full',        image: HOB_IMG.dining },
     { type: 'bleed-inset', left: HOB_IMG.living, inset: HOB_IMG.dogcouch },
     { type: 'inset-bleed', inset: HOB_IMG.lantern, right: HOB_IMG.dogwoman },
@@ -89,10 +94,12 @@
     { type: 'hero' },
     { type: 'full',        image: FG_IMG.living },
     { type: 'bleed-inset', left: FG_IMG.fireplace, inset: FG_IMG.pendant },
-    { type: 'bleed-quote', left: FG_IMG.kitchen },
+    { type: 'bleed-quote', left: FG_IMG.kitchen,
+      statement: 'Letting the old and new get into a dialogue.' },
     { type: 'full',        image: FG_IMG.bedroom },
     { type: 'inset-bleed', inset: FG_IMG.faucet,   right: FG_IMG.powder },
-    { type: 'bleed-quote', left: FG_IMG.hallway },
+    { type: 'bleed-quote', left: FG_IMG.hallway,
+      statement: 'We framed view corridors to evoke openness.' },
     { type: 'bleed-inset', left: FG_IMG.vanity,    inset: FG_IMG.vanityDetail },
   ];
 
@@ -135,7 +142,9 @@
     { type: 'hero' },
     { type: 'full',        image: FR_IMG.meadow },
     { type: 'bleed-inset', left: FR_IMG.facade, inset: FR_IMG.car },
-    { type: 'bleed-quote', left: FR_IMG.glass },
+    { type: 'bleed-quote', left: FR_IMG.glass,
+      statement: 'Our intent was to express the form through its clear ' +
+        'edges — the line, the square, the box.' },
     { type: 'full',        image: FR_IMG.dusk },
     { type: 'inset-bleed', inset: FR_IMG.dining,  right: FR_IMG.living },
     { type: 'full',        image: FR_IMG.aerial },
@@ -158,7 +167,9 @@
     { type: 'hero' },
     { type: 'full',        image: NK_IMG.aerial },
     { type: 'bleed-inset', left: NK_IMG.coconut, inset: NK_IMG.dew },
-    { type: 'bleed-quote', left: NK_IMG.dancer },
+    { type: 'bleed-quote', left: NK_IMG.dancer,
+      statement: 'A case study of emphasizing rhythm and ritual in ' +
+        'architecture.' },
     { type: 'inset-bleed', inset: NK_IMG.ritual, right: NK_IMG.courtyard },
     { type: 'full',        image: NK_IMG.sisters },
     { type: 'bleed-inset', left: NK_IMG.reading, inset: NK_IMG.lotus },
@@ -199,7 +210,9 @@
     { type: 'full',        image: MH_IMG.vista },
     { type: 'inset-bleed', inset: MH_IMG.trees, right: MH_IMG.door, bleedPos: '68% 55%' },
     { type: 'bleed-inset', left: MH_IMG.chip,   inset: MH_IMG.deer,  bleedPos: '55% 66%' },
-    { type: 'bleed-quote', left: MH_IMG.snow,   bleedPos: '45% 62%' },
+    { type: 'bleed-quote', left: MH_IMG.snow,   bleedPos: '45% 62%',
+      statement: 'An ephemeral setting called for a dynamic series of ' +
+        'visuals.' },
     { type: 'full',        image: MH_IMG.autumn },
   ];
 
@@ -228,7 +241,9 @@
     { type: 'inset-bleed', inset: HF_IMG.fixture,  right: HF_IMG.console, bleedPos: '40% 55%' },
     { type: 'bleed-inset', left: HF_IMG.living,    inset: HF_IMG.coffee,  bleedPos: '50% 52%' },
     { type: 'inset-bleed', inset: HF_IMG.chairDet, right: HF_IMG.cat,     bleedPos: '52% 52%' },
-    { type: 'bleed-quote', left: HF_IMG.woven,     bleedPos: '45% 48%' },
+    { type: 'bleed-quote', left: HF_IMG.woven,     bleedPos: '45% 48%',
+      statement: 'An eclectic and colorful dialogue of spatial ' +
+        'narratives.' },
     { type: 'full',        image: HF_IMG.kitchen },
     { type: 'inset-bleed', inset: HF_IMG.plant,    right: HF_IMG.counter, bleedPos: '55% 62%' },
     { type: 'bleed-inset', left: HF_IMG.powder,    inset: HF_IMG.blue,    bleedPos: '50% 58%' },
@@ -575,13 +590,16 @@
     return v;
   }
 
-  function makeQuote() {
+  /* The white half of a quote page: a one-line statement of the approach
+     taken to visualising this project. Not a quotation, so no attribution
+     and no quote marks — the text comes from the page's own `statement`. */
+  function makeStatement(text) {
     const q = document.createElement('div');
     q.className = 'quote';
-    q.innerHTML = '<div class="quote__name">Jane Doe</div>' +
-      '<blockquote class="quote__text">“Some people think design ' +
-      'means how it looks. But if you dig deeper, it’s really how it ' +
-      'works.”</blockquote>';
+    const p = document.createElement('p');
+    p.className = 'quote__text';
+    p.textContent = text || '';
+    q.appendChild(p);
     return q;
   }
 
@@ -639,11 +657,11 @@
         deskImageLeft = true;
       } else if (pg.type === 'bleed-quote') {
         imageEl = makeImg('ppage__bleed', pg.left, pg.bleedPos);
-        whiteEl = makeQuote();
+        whiteEl = makeStatement(pg.statement);
         deskImageLeft = true;
       } else if (pg.type === 'quote-bleed') {
         imageEl = makeImg('ppage__bleed', pg.right, pg.bleedPos);
-        whiteEl = makeQuote();
+        whiteEl = makeStatement(pg.statement);
         deskImageLeft = false;
       } else if (pg.type === 'inset-bleed') {
         imageEl = makeImg('ppage__bleed', pg.right, pg.bleedPos);

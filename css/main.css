@@ -675,31 +675,20 @@ img, canvas {
 /* ============================================================
    Dropdown menu — white panel over the right half only
    ============================================================ */
-/* Soft blur over the whole site while the menu is open. */
+/* The site behind the menu stays sharp and untinted. This layer is kept
+   only to swallow clicks on the site while the menu is open — it has no
+   appearance of its own. */
 .menu-backdrop {
   position: fixed;
   inset: 0;
   z-index: 8;                    /* above subpages, below the panel */
   visibility: hidden;
-  background: rgba(251, 251, 249, 0);
-  -webkit-backdrop-filter: blur(0px);
-  backdrop-filter: blur(0px);
-  transition:
-    backdrop-filter 600ms ease,
-    -webkit-backdrop-filter 600ms ease,
-    background 600ms ease,
-    visibility 0s linear 600ms;
+  transition: visibility 0s linear 600ms;
 }
 
 .menu-backdrop.is-on {
   visibility: visible;
-  background: rgba(251, 251, 249, 0.12);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
-  transition:
-    backdrop-filter 600ms ease,
-    -webkit-backdrop-filter 600ms ease,
-    background 600ms ease;
+  transition: visibility 0s linear 0s;
 }
 
 .menu-panel {

@@ -360,11 +360,15 @@ img, canvas {
 
 .quote__text {
   margin: 0;
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(20px, 1.9vw, 32px);
-  line-height: 1.55;
+  /* Same face as the carousel project titles, a step down in size. */
+  font-family: 'DM Sans', var(--font-body);
+  font-weight: 300;              /* DM Sans Light */
+  font-size: clamp(17px, 1.55vw, 26px);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
   color: var(--color-heading);
+  /* Even the lines out, so a statement never ends on a lone word. */
+  text-wrap: balance;
 }
 
 /* ============================================================

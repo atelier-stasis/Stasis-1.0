@@ -271,7 +271,10 @@
 
   const INACTIVE_SCALE = 0.46;      // inactive names relative to the active one
   const THUMB_SCALE = 0.74;         // neighbour thumbnails relative to the main one
+  const THUMB_SCALE_M = 0.78;       // ditto on the mobile card carousel
   const THUMB_OPACITY = 0.5;        // neighbour thumbnail opacity
+  const THUMB_OPACITY_M = 0.36;     // fainter on mobile: the neighbours are
+                                    // only a hint, and the logo sits over them
 
   const namesEl = document.getElementById('names');
   const carouselEl = document.getElementById('carousel');
@@ -341,35 +344,52 @@
 
   const M = {};
   function measure() {
-    // A panel is half the viewport: its width on desktop (side-by-side),
-    // its height on mobile (stacked top/bottom).
+    // Desktop: two half-width panels side by side, the hero filling one.
+    // Mobile: both panels overlay the whole screen so the carousel reads as
+    // a single column of cards. The project pages re-split that screen
+    // themselves (see the mobile block in main.css), which keeps the panels
+    // a fixed size and so keeps the open/expand animation smooth.
     if (isMobile) {
       M.panelW = window.innerWidth;
-      M.panelH = window.innerHeight / 2;
+      M.panelH = window.innerHeight;
+      M.heroW = window.innerWidth;          // hero docks into the bottom half
+      M.heroH = window.innerHeight / 2;
+      M.heroTop = window.innerHeight / 2;
     } else {
       M.panelH = window.innerHeight;
       M.panelW = window.innerWidth / 2;
+      M.heroW = M.panelW;
+      M.heroH = M.panelH;
+      M.heroTop = 0;
     }
     // Row height scales with the display size so the list breathes.
     const fontPx = parseFloat(getComputedStyle(nameSlots[0].title).fontSize);
-    M.rowH = isMobile ? Math.max(64, fontPx * 1.9) : Math.max(128, fontPx * 2.15);
-    // The title's own half-height is 0.55em (line-height 1.1), so the
-    // visible gap under it is this multiplier minus 0.55 — keep the two
-    // breakpoints close so the location sits just under the title.
-    M.tagOffset = fontPx * (isMobile ? 0.85 : 0.66);
+    M.rowH = Math.max(128, fontPx * 2.15);   // desktop list rhythm
+
     if (isMobile) {
-      // Main thumbnail fills most of the bottom panel, capped by width.
-      M.thumbH = Math.round(Math.min(M.panelH * 0.82, M.panelW * 0.86 / 0.75));
+      // A card is the thumbnail with its name and location underneath.
+      M.thumbH = Math.round(Math.min(M.panelH * 0.50, M.panelW * 0.70 / 0.75));
       M.thumbW = Math.round(M.thumbH * 0.75);
+      const gap = 24;                        // image bottom -> title top
+      const titleH = fontPx * 1.1;           // line-height 1.1
+      M.nameOffset = M.thumbH / 2 + gap + fontPx * 0.55;
+      M.tagOffset = M.thumbH / 2 + gap + titleH + 10;
+      // Half of this card plus half of the (smaller) next one, the text
+      // block between them, and breathing room — so each neighbour shows
+      // only as a sliver of image at the top and bottom of the screen.
+      M.thumbSpacing = M.thumbH * (0.5 + THUMB_SCALE_M / 2) +
+        gap + titleH + 26 + Math.max(56, M.panelH * 0.12);
     } else {
       // Main thumbnail: portrait 3:4, capped by both panel height and width.
       M.thumbW = Math.round(Math.min(M.panelH * 0.62 * 0.75, M.panelW * 0.58));
       M.thumbH = Math.round(M.thumbW / 0.75);
+      M.nameOffset = 0;                      // names are their own list
+      M.tagOffset = fontPx * 0.66;
+      // Spacing leaves a calm gap after the main image while keeping the
+      // neighbours cropped by the panel edges.
+      M.thumbSpacing = M.thumbH * (0.5 + THUMB_SCALE / 2) +
+        Math.max(28, M.panelH * 0.05);
     }
-    // Spacing leaves a calm gap after the main image while keeping the
-    // neighbours cropped by the panel edges.
-    M.thumbSpacing = M.thumbH * (0.5 + THUMB_SCALE / 2) +
-      Math.max(isMobile ? 16 : 28, M.panelH * (isMobile ? 0.06 : 0.05));
 
     for (let i = 0; i < thumbSlots.length; i++) {
       const t = thumbSlots[i];
@@ -415,13 +435,20 @@
         nameSlot.project = mod(k, N);
         nameSlot.title.textContent = project.name;
       }
-      const y = (k - pos) * M.rowH;
-      const scale = 1 - (1 - INACTIVE_SCALE) * t;
+      // Mobile is one column of cards, so the name rides under its own
+      // thumbnail and only the centred card shows it; desktop keeps the
+      // names as their own list, counter-moving against the thumbnails.
+      const cardY = (k - pos) * M.thumbSpacing;
+      const y = isMobile ? cardY + M.nameOffset : (k - pos) * M.rowH;
+      const scale = isMobile ? 1 - 0.12 * t : 1 - (1 - INACTIVE_SCALE) * t;
       nameSlot.el.style.transform =
         'translateY(' + y.toFixed(2) + 'px) scale(' + scale.toFixed(4) + ')';
       nameSlot.title.style.color = nameColor(t);
+      nameSlot.el.style.opacity =
+        isMobile ? clamp01(1 - t * 1.9).toFixed(3) : '';
 
-      // Right: thumbnails travel the opposite direction, in lockstep.
+      // Right: thumbnails travel the opposite direction, in lockstep —
+      // except on mobile, where card and name move together.
       if (projectOpen && i === HALF) continue;   // hero is out of the carousel
       const thumb = thumbSlots[i];
       if (thumb.project !== mod(k, N)) {
@@ -429,11 +456,12 @@
         thumb.img.src = project.image;
         thumb.img.style.objectPosition = project.imagePos || '';
       }
-      const ty = -(k - pos) * M.thumbSpacing;
-      const ts = 1 - (1 - THUMB_SCALE) * t;
+      const ty = isMobile ? cardY : -(k - pos) * M.thumbSpacing;
+      const ts = 1 - (1 - (isMobile ? THUMB_SCALE_M : THUMB_SCALE)) * t;
       thumb.el.style.transform =
         'translateY(' + ty.toFixed(2) + 'px) scale(' + ts.toFixed(4) + ')';
-      thumb.el.style.opacity = (1 - (1 - THUMB_OPACITY) * t).toFixed(3);
+      const to = isMobile ? THUMB_OPACITY_M : THUMB_OPACITY;
+      thumb.el.style.opacity = (1 - (1 - to) * t).toFixed(3);
       thumb.el.style.zIndex = dist < 0.5 ? 2 : 1;
     }
 
@@ -446,13 +474,15 @@
 
   const EXPAND_MS = 850;      // shared-element expand + white reveal duration
 
+  /* The hero's docked rectangle: a whole panel on desktop, the bottom half
+     of the screen on mobile, where the panels span the full viewport. */
   function setExpandedGeometry(el) {
     el.style.left = '0px';
-    el.style.top = '0px';
+    el.style.top = M.heroTop + 'px';
     el.style.marginLeft = '0px';
     el.style.marginTop = '0px';
-    el.style.width = M.panelW + 'px';
-    el.style.height = M.panelH + 'px';
+    el.style.width = M.heroW + 'px';
+    el.style.height = M.heroH + 'px';
     el.style.transform = 'none';
     el.style.opacity = '1';
   }
@@ -774,7 +804,11 @@
     setTimeout(function () {
       buildProjectPages(pages);
       // Dock the hero inside the right strip so it rides the page pushes.
+      // Reset the offset too: expanded geometry is viewport-relative (on
+      // mobile the hero sits in the lower half), but the dock IS that half.
       slot.style.transition = 'none';
+      slot.style.left = '0px';
+      slot.style.top = '0px';
       slot.style.width = '100%';
       slot.style.height = '100%';
       slot.style.transform = 'none';
@@ -827,7 +861,7 @@
       if (i === HALF) continue;
       const el = thumbSlots[i].el;
       el.style.transition = 'opacity 700ms ease 250ms';
-      el.style.opacity = String(THUMB_OPACITY);
+      el.style.opacity = String(isMobile ? THUMB_OPACITY_M : THUMB_OPACITY);
     }
 
     setTimeout(function () {

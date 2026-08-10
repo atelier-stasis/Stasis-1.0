@@ -810,9 +810,36 @@ img, canvas {
    Desktop (>768px) is untouched.
    ============================================================ */
 @media (max-width: 768px) {
-  /* Stack the shell: names/text on top, image on the bottom. */
+  /* The panels still stack, so the project pages keep their 50/50 geometry
+     and, importantly, the panel's overflow clip that hides the pages either
+     side of the current one. */
   .split { flex-direction: column; }
   .split__panel { width: 100%; height: 50%; }
+
+  /* Browsing, though, is not a split: the carousel and the names lift out
+     of those half-panels to span the whole screen, so each project reads as
+     one card — thumbnail with its name and location underneath. Fixed
+     positioning escapes the panel's overflow clip because no ancestor is
+     transformed; these two layers are themselves stationary, so clipping
+     them to the viewport is safe (the project strips are not, and must keep
+     relying on the panel). */
+  .names,
+  .carousel {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .carousel__slot { pointer-events: auto; }
+  .names__slot { pointer-events: none; }
+  .names__slot.is-active { pointer-events: auto; }
+
+  /* Names belong to the carousel; a project page replaces them. */
+  .split.is-project-open .names {
+    opacity: 0;
+    transition: opacity 350ms ease;
+  }
+  .split.is-project-open .carousel__slot { pointer-events: none; }
 
   /* Names (top panel) — centred on the page, to sit over the thumbnail
      below rather than hugging the left edge as on desktop. */

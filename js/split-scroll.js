@@ -26,6 +26,7 @@
   const IDLE_MS = 130;          // gesture considered finished after this quiet time
   const SETTLE_EPS = 0.001;     // how close to target counts as "at rest"
   const INTENT_MIN = 0.12;      // smallest gesture that still advances one item
+  const TAP_SLOP = 8;           // px of finger travel before a touch is a swipe
 
   class SplitScroll {
     constructor(opts) {
@@ -42,6 +43,7 @@
       this.gestureStart = 0;    // target value when the current gesture began
       this.inGesture = false;
       this.touchY = null;
+      this.touchStartY = 0;     // where the finger landed, for the tap test
       this.touchVel = 0;
       this.lastFrame = performance.now();
 
@@ -91,20 +93,27 @@
         this.lastInputTime = performance.now();
       }, { passive: false });
 
+      // A touch does NOT start a gesture on its own: a tap must leave the
+      // centred item's active state intact, because that is what its click
+      // handler tests for and the click lands after touchend. The gesture
+      // begins on the first move past TAP_SLOP, so finger jitter during a
+      // tap never reads as a swipe.
       window.addEventListener('touchstart', (e) => {
         if (!this.enabled) return;
         this.touchY = e.touches[0].clientY;
+        this.touchStartY = this.touchY;
         this.touchVel = 0;
-        this._beginGesture();
       }, { passive: true });
 
       window.addEventListener('touchmove', (e) => {
         if (this.touchY === null) return;
         const y = e.touches[0].clientY;
+        if (!this.inGesture && Math.abs(y - this.touchStartY) < TAP_SLOP) return;
         const d = this.touchY - y;
         this.touchY = y;
         const delta = d / (window.innerHeight * 0.42); // one screen-swipe ≈ 2 items
         this.touchVel = delta;
+        this._beginGesture();               // captures gestureStart pre-move
         this.target += delta;
         this.lastInputTime = performance.now();
       }, { passive: true });
@@ -112,6 +121,7 @@
       window.addEventListener('touchend', () => {
         if (this.touchY === null) return;
         this.touchY = null;
+        if (!this.inGesture) return;        // a tap: nothing to carry or snap
         this.target += this.touchVel * 10;  // gentle momentum carry
         this._endGesture();
       });

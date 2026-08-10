@@ -814,24 +814,53 @@ img, canvas {
   .split { flex-direction: column; }
   .split__panel { width: 100%; height: 50%; }
 
-  /* Names (top panel) */
+  /* Names (top panel) — centred on the page, to sit over the thumbnail
+     below rather than hugging the left edge as on desktop. */
   .names { padding-left: 24px; padding-right: 24px; }
-  .names__slot { left: 24px; right: 24px; }
+  .names__slot {
+    left: 24px;
+    right: 24px;
+    text-align: center;
+    transform-origin: center center;   /* scale about the centre, not the left */
+  }
   .names__title { font-size: clamp(22px, 6.2vw, 36px); }
-  .names__tag { left: 24px; font-size: 12px; }
+  .names__tag {
+    left: 24px;
+    right: 24px;
+    text-align: center;
+    font-size: 12px;
+  }
 
   /* Loader halves stack: top enters from above, bottom from below. */
   .loader__half { width: 100%; height: 50%; }
   .loader__half--left  { left: 0; top: 0;   transform: translateY(-101%); }
   .loader__half--right { left: 0; top: 50%; transform: translateY(101%); }
 
-  /* Project copy block sits in the top half, below the header. */
+  /* Project copy sits in the top half, below the header. Bounded top and
+     bottom and centred within that box, so the concept keeps white space
+     around it. The type scales with viewport height — height, not width,
+     is the binding constraint — so the longest concept still fits on a
+     short phone without being clipped. */
   .project-copy {
     left: var(--header-pad);
     right: var(--header-pad);
-    top: clamp(64px, 11vh, 104px);
-    bottom: auto;
+    top: clamp(52px, 8.5vh, 84px);
+    bottom: clamp(14px, 2.4vh, 26px);
     max-width: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  .project-copy section { padding-bottom: 14px; }
+  .project-copy h3 {
+    font-size: 9px;
+    letter-spacing: 0.26em;
+    margin-bottom: 10px;
+  }
+  .project-copy p {
+    font-size: clamp(9.5px, 1.7vh, 12px);
+    line-height: 1.62;
   }
 
   /* Menu covers the full width. */
@@ -844,13 +873,25 @@ img, canvas {
   .subpage__half { width: 100%; height: 50%; }
   .subpage__half--left  { left: 0; top: 50%; }   /* image → bottom */
   .subpage__half--right { left: 0; top: 0; }      /* content → top */
-  .subpage__content { padding: 14vh 24px 5vh; }
-  .subpage__content--about { padding: 9vh 0 4vh; }
-  .about-copy { padding: 0 24px; }
-  .about-copy p { font-size: clamp(15px, 4vw, 19px); }
-  .about-collabs__label { font-size: 15px; margin-bottom: 14px; }
-  .about-marquee__seq { font-size: 15px; }
-  .contact-block { padding: 0 24px; }
-  .contact-block__lead { font-size: clamp(17px, 5vw, 22px); margin-bottom: 2em; }
-  .contact-block__body { font-size: clamp(15px, 4vw, 18px); }
+  /* About / Contact copy has to live inside half the viewport, so the type
+     scales with height rather than width — at the old width-based sizes the
+     Collaborations row fell off the bottom of the panel. */
+  .subpage__content { padding: 10vh 24px 4vh; }
+  .subpage__content--about { padding: 6vh 0 3vh; }
+  .about-copy { padding: 0 22px; }
+  .about-copy p {
+    font-size: clamp(11px, 1.7vh, 15px);
+    margin-bottom: 0.9em;
+  }
+  .about-collabs__label {
+    font-size: clamp(10px, 1.4vh, 13px);
+    margin-bottom: 8px;
+  }
+  .about-marquee__seq { font-size: clamp(10px, 1.4vh, 13px); }
+  .contact-block { padding: 0 22px; }
+  .contact-block__lead {
+    font-size: clamp(14px, 2.1vh, 19px);
+    margin-bottom: 1.8em;
+  }
+  .contact-block__body { font-size: clamp(11px, 1.7vh, 15px); }
 }

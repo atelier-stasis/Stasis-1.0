@@ -353,7 +353,10 @@
     // Row height scales with the display size so the list breathes.
     const fontPx = parseFloat(getComputedStyle(nameSlots[0].title).fontSize);
     M.rowH = isMobile ? Math.max(64, fontPx * 1.9) : Math.max(128, fontPx * 2.15);
-    M.tagOffset = fontPx * (isMobile ? 1.5 : 0.66);
+    // The title's own half-height is 0.55em (line-height 1.1), so the
+    // visible gap under it is this multiplier minus 0.55 — keep the two
+    // breakpoints close so the location sits just under the title.
+    M.tagOffset = fontPx * (isMobile ? 0.85 : 0.66);
     if (isMobile) {
       // Main thumbnail fills most of the bottom panel, capped by width.
       M.thumbH = Math.round(Math.min(M.panelH * 0.82, M.panelW * 0.86 / 0.75));

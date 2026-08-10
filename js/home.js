@@ -54,7 +54,7 @@
     man:      '00 Visuals/02 Visuals_Projects/_Reduced/05 House on the Bluff/Man_walking_across_space_4K_202607191754 copy.webp',
     whiskey:  '00 Visuals/02 Visuals_Projects/_Reduced/05 House on the Bluff/Whiskey_ice_leather_lounge_chair_202607191806 copy.webp',
     coastal:  '00 Visuals/02 Visuals_Projects/_Reduced/05 House on the Bluff/Medium_telephoto_detail_shot_4K_202607191737 copy.webp',
-    lamp:     HOB + 'Update_book_to_say_\'COASTAL_202607191858.jpeg',
+    lamp:     '00 Visuals/02 Visuals_Projects/_Reduced/05 House on the Bluff/Update_book_to_say_\'COASTAL_202607191858 copy.webp',
     dining:   '00 Visuals/02 Visuals_Projects/_Reduced/05 House on the Bluff/Dining_room_detail_shot_4K_202607191841 copy.webp',
     living:   '00 Visuals/02 Visuals_Projects/_Reduced/05 House on the Bluff/Architectural_photograph_in_Mons…_4K_202607191719 copy.webp',
     dogcouch: '00 Visuals/02 Visuals_Projects/_Reduced/05 House on the Bluff/Dog_lying_on_couch_4K_202607191739 copy.webp',

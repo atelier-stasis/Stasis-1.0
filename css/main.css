@@ -360,16 +360,23 @@ img, canvas {
 
 .quote__text {
   margin: 0;
-  /* Same face as the carousel project titles, a step down in size. */
+  /* Face of the carousel project titles, at the size of the contact
+     page's "Conveying Spatial Narratives" lead — keep the two in step. */
   font-family: 'DM Sans', var(--font-body);
   font-weight: 300;              /* DM Sans Light */
-  font-size: clamp(17px, 1.55vw, 26px);
+  font-size: clamp(18px, 1.3vw, 26px);
   line-height: 1.5;
   letter-spacing: 0.01em;
   color: var(--color-heading);
   /* Even the lines out, so a statement never ends on a lone word. */
   text-wrap: balance;
 }
+
+/* Quote marks live in CSS so the statement text itself stays clean, and
+   because they carry no space they stay welded to the first and last
+   words rather than wrapping onto a line of their own. */
+.quote__text::before { content: '\201C'; }
+.quote__text::after  { content: '\201D'; }
 
 /* ============================================================
    Subpages (About / Contact) — split view, signature entrance
@@ -915,4 +922,7 @@ img, canvas {
     margin-bottom: 1.8em;
   }
   .contact-block__body { font-size: clamp(11px, 1.7vh, 15px); }
+
+  /* Statements track the contact lead's size here too. */
+  .quote__text { font-size: clamp(14px, 2.1vh, 19px); }
 }

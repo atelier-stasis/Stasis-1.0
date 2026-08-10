@@ -998,23 +998,66 @@
 
   const aboutEl = document.getElementById('page-about');
   const contactEl = document.getElementById('page-contact');
+  const showreelEl = document.getElementById('page-showreel');
+  const showreelVideo = document.getElementById('showreel-video');
+  const showreelSound = document.getElementById('showreel-sound');
+
+  const SHOWREEL_SRC =
+    '00 Visuals/02 Visuals_Projects/_Reduced/00 Showreel/Showreel 720p.mp4';
 
   function subpageOpen() {
     return aboutEl.classList.contains('is-open') ||
-      contactEl.classList.contains('is-open');
+      contactEl.classList.contains('is-open') ||
+      showreelEl.classList.contains('is-open');
   }
 
   function openSubpage(el) {
+    hideShowreel();                   // never leave the reel running behind
     aboutEl.classList.toggle('is-open', el === aboutEl);
     contactEl.classList.toggle('is-open', el === contactEl);
     scroller.setEnabled(false);       // nothing behind a subpage moves
     setTimeout(updateLogoTheme, 400); // flip as the image slides under
   }
 
+  /* Slide the reel away and stop it: a paused video also stops buffering. */
+  function hideShowreel() {
+    if (!showreelEl.classList.contains('is-open')) return;
+    showreelEl.classList.remove('is-open');
+    showreelVideo.pause();
+    showreelVideo.muted = true;
+    setSoundLabel();
+  }
+
+  /* The reel is a heavy file, so its source is attached on first open
+     rather than at page load — nothing is fetched until it's asked for.
+     Autoplay has to start muted; the corner toggle turns sound on. */
+  function openShowreel() {
+    if (!showreelVideo.src) showreelVideo.src = encodeURI(SHOWREEL_SRC);
+    showreelEl.classList.add('is-open');
+    scroller.setEnabled(false);
+    showreelVideo.muted = true;
+    setSoundLabel();
+    showreelVideo.play().catch(function () {});
+    setTimeout(updateLogoTheme, 400);
+  }
+
+  function setSoundLabel() {
+    showreelSound.textContent = showreelVideo.muted ? 'Sound' : 'Mute';
+    showreelSound.setAttribute('aria-label',
+      showreelVideo.muted ? 'Unmute showreel' : 'Mute showreel');
+  }
+
+  showreelSound.addEventListener('click', function () {
+    showreelVideo.muted = !showreelVideo.muted;
+    if (!showreelVideo.muted) showreelVideo.play().catch(function () {});
+    setSoundLabel();
+  });
+
   function closeSubpages() {
     const wasOpen = subpageOpen();
     aboutEl.classList.remove('is-open');
     contactEl.classList.remove('is-open');
+    hideShowreel();
     if (wasOpen) setTimeout(updateLogoTheme, 400);
   }
 
@@ -1164,6 +1207,11 @@
       closeSubpages();
       resetProjectInstant();
       scroller.setEnabled(true);
+    } else if (nav === 'showreel') {
+      closeMenu();
+      closeSubpages();
+      resetProjectInstant();
+      openShowreel();
     } else if (nav === 'about') {
       closeMenu();
       resetProjectInstant();

@@ -675,6 +675,56 @@ img, canvas {
 /* ============================================================
    Dropdown menu — white panel over the right half only
    ============================================================ */
+/* ============================================================
+   Showreel — full-bleed video, entering as one plane
+   ============================================================ */
+.showreel {
+  position: fixed;
+  inset: 0;
+  z-index: 7;                    /* same level as the subpages */
+  overflow: hidden;
+  pointer-events: none;
+  background: #151515;
+  transform: translateY(101%);
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.showreel.is-open {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* `contain`, not `cover`: the reel is a composed edit, so letterbox it
+   rather than crop the framing the edit already decided. */
+.showreel__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #151515;
+}
+
+/* Sound toggle, mirroring the back arrow on the opposite corner. */
+.showreel__sound {
+  position: absolute;
+  right: var(--header-pad);
+  bottom: var(--header-pad);
+  padding: 8px 2px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: 'DM Sans', var(--font-body);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #ffffff;
+  opacity: 0.7;
+  transition: opacity 0.35s ease;
+}
+
+.showreel__sound:hover { opacity: 1; }
+
 /* The site behind the menu stays sharp and untinted. This layer is kept
    only to swallow clicks on the site while the menu is open — it has no
    appearance of its own. */

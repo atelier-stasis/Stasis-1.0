@@ -91,6 +91,7 @@
       <a class="menu-nav__item" href="#" data-nav="home">Home</a>
       <a class="menu-nav__item" href="#" data-nav="about">About</a>
       <a class="menu-nav__item" href="#" data-nav="projects">Projects</a>
+      <a class="menu-nav__item" href="#" data-nav="showreel">Showreel</a>
       <a class="menu-nav__item" href="#" data-nav="contact">Contact</a>
     </nav>
     <div class="menu-studio">
@@ -144,6 +145,15 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Showreel: full-bleed video sliding in as one plane. The source is
+       attached on first open, so the file is never fetched until asked for. -->
+  <div class="showreel" id="page-showreel">
+    <video class="showreel__video" id="showreel-video"
+           muted loop playsinline preload="none"></video>
+    <button class="showreel__sound" id="showreel-sound" type="button"
+            aria-label="Unmute showreel">Sound</button>
   </div>
 
   <!-- Loading animation: two full-bleed halves + breathing wordmark -->

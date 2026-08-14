@@ -360,8 +360,8 @@ img, canvas {
 
 .quote__text {
   margin: 0;
-  /* Face of the carousel project titles, at the size of the contact
-     page's "Conveying Spatial Narratives" lead — keep the two in step. */
+  /* Face of the carousel project titles, at the same size as the contact
+     page's address — keep the two in step. */
   font-family: 'DM Sans', var(--font-body);
   font-weight: 300;              /* DM Sans Light */
   font-size: clamp(18px, 1.3vw, 26px);
@@ -499,10 +499,15 @@ img, canvas {
 
 /* Contact: heading + invitation, centred like the About copy and
    sharing its type scale. */
-.subpage__content--contact {
+/* A single line of type, so drop the shared rule's asymmetric padding
+   entirely and let it sit dead centre in the half. `.contact-block`
+   still supplies the horizontal inset on narrow screens. The doubled
+   class outranks the mobile `.subpage__content` override below. */
+.subpage__content.subpage__content--contact {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
 }
 
 .contact-block {
@@ -511,30 +516,22 @@ img, canvas {
   text-align: center;
 }
 
-.contact-block__lead {
-  margin: 0 0 3.2em;
+/* The address is the whole page, so it carries the weight on its own. */
+.contact-block__email {
+  margin: 0;
   font-size: clamp(18px, 1.3vw, 26px);
   font-weight: 300;
   line-height: 1.4;
   color: var(--color-body);
 }
 
-.contact-block__body {
-  margin: 0;
-  font-size: clamp(16px, 1.15vw, 22px);
-  font-weight: 300;
-  line-height: 1.6;
-  color: var(--color-body);
-  text-wrap: pretty;             /* no single-word last lines */
-}
-
-.contact-block__body a {
-  color: #A2A2A2;
+.contact-block__email a {
+  color: inherit;
   text-decoration: none;
   transition: opacity 0.35s ease;
 }
 
-.contact-block__body a:hover { opacity: 0.6; }
+.contact-block__email a:hover { opacity: 0.6; }
 
 /* Back arrow — over the project-page images, returns to the carousel. */
 .project-back {
@@ -957,12 +954,8 @@ img, canvas {
   }
   .about-marquee__seq { font-size: clamp(10px, 1.4vh, 13px); }
   .contact-block { padding: 0 22px; }
-  .contact-block__lead {
-    font-size: clamp(14px, 2.1vh, 19px);
-    margin-bottom: 1.8em;
-  }
-  .contact-block__body { font-size: clamp(11px, 1.7vh, 15px); }
+  .contact-block__email { font-size: clamp(14px, 2.1vh, 19px); }
 
-  /* Statements track the contact lead's size here too. */
+  /* Statements and the contact address share a size on mobile. */
   .quote__text { font-size: clamp(14px, 2.1vh, 19px); }
 }
